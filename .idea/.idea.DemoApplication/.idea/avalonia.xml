@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="DemoApplication/App.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/MainWindow.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/Pages/Clients.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/Pages/CreateClient.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/Pages/CreateDeal.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/Pages/CreateDemand.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/Pages/CreateRealEstate.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/Pages/CreateRealEstates.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/Pages/CreateRealtor.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/Pages/CreateSupply.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/Pages/Deals.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/Pages/Demands.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/Pages/MainMenu.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/Pages/RealEstates.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/Pages/Realtors.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/Pages/Supplies.axaml" value="DemoApplication/DemoApplication.csproj" />
+      </map>
+    </option>
+  </component>
+</project>

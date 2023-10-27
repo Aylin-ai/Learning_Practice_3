@@ -1,0 +1,61 @@
+is_global = true
+build_property.AvaloniaNameGeneratorIsEnabled = true
+build_property.AvaloniaNameGeneratorBehavior = InitializeComponent
+build_property.AvaloniaNameGeneratorDefaultFieldModifier = internal
+build_property.AvaloniaNameGeneratorFilterByPath = *
+build_property.AvaloniaNameGeneratorFilterByNamespace = *
+build_property.TargetFramework = net7.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = DemoApplication
+build_property.ProjectDir = /home/aylin/RiderProjects/DemoApplication/DemoApplication/
+
+[/home/aylin/RiderProjects/DemoApplication/DemoApplication/App.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/MainWindow.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/Pages/Clients.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/Pages/CreateClient.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/Pages/CreateDeal.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/Pages/CreateDemand.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/Pages/CreateRealEstate.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/Pages/CreateRealtor.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/Pages/CreateSupply.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/Pages/Deals.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/Pages/Demands.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/Pages/MainMenu.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/Pages/RealEstates.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/Pages/Realtors.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/Pages/Supplies.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
