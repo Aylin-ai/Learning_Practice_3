@@ -7,8 +7,12 @@
         <entry key="DemoApplication/Views/MainWindow.axaml" value="DemoApplication/DemoApplication.csproj" />
         <entry key="DemoApplication/Views/PageViews/Clients.axaml" value="DemoApplication/DemoApplication.csproj" />
         <entry key="DemoApplication/Views/PageViews/ClientsView.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/PageViews/DealsView.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/PageViews/Demands.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/PageViews/DemandsView.axaml" value="DemoApplication/DemoApplication.csproj" />
         <entry key="DemoApplication/Views/PageViews/MainMenu.axaml" value="DemoApplication/DemoApplication.csproj" />
         <entry key="DemoApplication/Views/PageViews/MainMenuView.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/PageViews/RealEstatesView.axaml" value="DemoApplication/DemoApplication.csproj" />
         <entry key="DemoApplication/Views/PageViews/RealtorsView.axaml" value="DemoApplication/DemoApplication.csproj" />
         <entry key="DemoApplication/Views/PageViews/SuppliesView.axaml" value="DemoApplication/DemoApplication.csproj" />
         <entry key="DemoApplication/Views/Pages/Clients.axaml" value="DemoApplication/DemoApplication.csproj" />

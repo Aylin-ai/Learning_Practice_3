@@ -12,6 +12,13 @@ public class RealEstate : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _id, value);
     }
 
+    private string _type;
+    public string Type
+    {
+        get => _type;
+        set => this.RaiseAndSetIfChanged(ref _type, value);
+    }
+
     private Address? _address;
     public Address? Address
     {

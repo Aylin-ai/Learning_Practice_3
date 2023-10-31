@@ -2,11 +2,11 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace DemoApplication.Views.Pages;
+namespace DemoApplication.Views.PageViews;
 
-public partial class RealEstates : UserControl
+public partial class DealsView : UserControl
 {
-    public RealEstates()
+    public DealsView()
     {
         InitializeComponent();
     }

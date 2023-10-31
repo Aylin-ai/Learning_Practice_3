@@ -5,11 +5,11 @@
              xmlns:pageViewModels="clr-namespace:DemoApplication.ViewModels.PageViewModels"
              xmlns:models="clr-namespace:DemoApplication.Models"
              mc:Ignorable="d" d:DesignWidth="100" d:DesignHeight="100"
-             x:Class="DemoApplication.Views.PageViews.SuppliesView"
+             x:Class="DemoApplication.Views.PageViews.RealEstatesView"
              x:CompileBindings="False">
     
     <UserControl.DataContext>
-        <pageViewModels:SuppliesViewModel/>
+        <pageViewModels:RealEstatesViewModel/>
     </UserControl.DataContext>
     
     <Grid>
@@ -19,41 +19,36 @@
         </Grid.ColumnDefinitions>
         
         <DockPanel LastChildFill="True">
-            <ListBox ItemsSource="{Binding Supplies}">
+            <ListBox ItemsSource="{Binding RealEstates}">
                 <ListBox.ItemTemplate>
-                    <DataTemplate DataType="models:Supply">
+                    <DataTemplate DataType="models:RealEstate">
                         <StackPanel Orientation="Vertical">
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Клиент -"></Label>
-                                <Label Content="{Binding Client.FirstName}"/>
-                                <Label Content="{Binding Client.SecondName}"/>
-                                <Label Content="{Binding Client.LastName}"/>
+                                <Label Content="{Binding Type}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="{Binding Client.Phone}"/>
-                                <Label Content="{Binding Client.Email}"/>
+                                <Label Content="{Binding Address.City}"/>
+                                <Label Content="{Binding Address.Street}"/>
+                                <Label Content="{Binding Address.House}"/>
+                                <Label Content="{Binding Address.Apartment}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Риелтор -"></Label>
-                                <Label Content="{Binding Realtor.FirstName}"/>
-                                <Label Content="{Binding Realtor.SecondName}"/>
-                                <Label Content="{Binding Realtor.LastName}"/>
-                                <Label Content="{Binding Realtor.Share}"/>
-                                <Label Content="%"/>
+                                <Label Content="Координаты - "/>
+                                <Label Content="{Binding Coordinates.Latitude}"/>
+                                <Label Content=";"/>
+                                <Label Content="{Binding Coordinates.Longitude}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Объект недвижимости -"/>
-                                <Label Content="{Binding RealEstate.Type}"/>
+                                <Label Content="Этаж - "/>
+                                <Label Content="{Binding MoreInformation.Floor}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="{Binding RealEstate.Address.City}"/>
-                                <Label Content="{Binding RealEstate.Address.Street}"/>
-                                <Label Content="{Binding RealEstate.Address.House}"/>
-                                <Label Content="{Binding RealEstate.Address.Apartment}"/>
+                                <Label Content="Количество комнат - "/>
+                                <Label Content="{Binding MoreInformation.Rooms}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Цена -"/>
-                                <Label Content="{Binding Cost}"/>
+                                <Label Content="Площадь - "/>
+                                <Label Content="{Binding MoreInformation.TotalArea}"/>
                             </StackPanel>
                         </StackPanel>
                     </DataTemplate>
@@ -66,4 +61,5 @@
         </DockPanel>
         
     </Grid>
+    
 </UserControl>

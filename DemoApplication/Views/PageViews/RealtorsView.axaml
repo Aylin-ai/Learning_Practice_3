@@ -3,6 +3,42 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="100" d:DesignHeight="100"
-             x:Class="DemoApplication.Views.PageViews.RealtorsView">
-    Welcome to Avalonia!
+             xmlns:pageViewModel="clr-namespace:DemoApplication.ViewModels.PageViewModels"
+             xmlns:models="clr-namespace:DemoApplication.Models"
+             x:Class="DemoApplication.Views.PageViews.RealtorsView"
+             x:CompileBindings="False">
+    <UserControl.DataContext>
+        <pageViewModel:RealtorsViewModel/>
+    </UserControl.DataContext>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        
+        <DockPanel LastChildFill="True">
+            <ListBox ItemsSource="{Binding Realtors}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="models:Realtor">
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="{Binding FirstName}"/>
+                                <Label Content="{Binding SecondName}"/>
+                                <Label Content="{Binding LastName}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="{Binding Share}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+        
+        <DockPanel Grid.Column="1">
+            <ComboBox/>
+        </DockPanel>
+        
+    </Grid>
 </UserControl>

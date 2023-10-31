@@ -43,5 +43,17 @@
         <DependentUpon>Supplies.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\PageViews\RealEstatesView.axaml.cs">
+        <DependentUpon>RealEstates.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\PageViews\DemandsView.axaml.cs">
+        <DependentUpon>Demands.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\PageViews\DealsView.axaml.cs">
+        <DependentUpon>Deals.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 </Project>

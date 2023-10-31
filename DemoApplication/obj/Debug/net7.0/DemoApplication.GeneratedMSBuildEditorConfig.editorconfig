@@ -39,19 +39,19 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 [/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/Pages/CreateSupply.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/Pages/Deals.axaml]
-build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
-
-[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/Pages/Demands.axaml]
-build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
-
-[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/Pages/RealEstates.axaml]
-build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
-
 [/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/PageViews/ClientsView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/PageViews/DealsView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/PageViews/DemandsView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/PageViews/MainMenuView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/PageViews/RealEstatesView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
 [/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/PageViews/RealtorsView.axaml]

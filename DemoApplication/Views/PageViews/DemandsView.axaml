@@ -5,11 +5,11 @@
              xmlns:pageViewModels="clr-namespace:DemoApplication.ViewModels.PageViewModels"
              xmlns:models="clr-namespace:DemoApplication.Models"
              mc:Ignorable="d" d:DesignWidth="100" d:DesignHeight="100"
-             x:Class="DemoApplication.Views.PageViews.SuppliesView"
+             x:Class="DemoApplication.Views.PageViews.DemandsView"
              x:CompileBindings="False">
     
     <UserControl.DataContext>
-        <pageViewModels:SuppliesViewModel/>
+        <pageViewModels:DemandsViewModel/>
     </UserControl.DataContext>
     
     <Grid>
@@ -19,9 +19,9 @@
         </Grid.ColumnDefinitions>
         
         <DockPanel LastChildFill="True">
-            <ListBox ItemsSource="{Binding Supplies}">
+            <ListBox ItemsSource="{Binding Demands}">
                 <ListBox.ItemTemplate>
-                    <DataTemplate DataType="models:Supply">
+                    <DataTemplate DataType="models:Demand">
                         <StackPanel Orientation="Vertical">
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="Клиент -"></Label>
@@ -43,17 +43,21 @@
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="Объект недвижимости -"/>
-                                <Label Content="{Binding RealEstate.Type}"/>
+                                <Label Content="{Binding RealEstateType}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="{Binding RealEstate.Address.City}"/>
-                                <Label Content="{Binding RealEstate.Address.Street}"/>
-                                <Label Content="{Binding RealEstate.Address.House}"/>
-                                <Label Content="{Binding RealEstate.Address.Apartment}"/>
+                                <Label Content="{Binding Address.City}"/>
+                                <Label Content="{Binding Address.Street}"/>
+                                <Label Content="{Binding Address.House}"/>
+                                <Label Content="{Binding Address.Apartment}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Цена -"/>
-                                <Label Content="{Binding Cost}"/>
+                                <Label Content="Мин. цена -"/>
+                                <Label Content="{Binding MinCost}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Макс. цена -"/>
+                                <Label Content="{Binding MaxCost}"/>
                             </StackPanel>
                         </StackPanel>
                     </DataTemplate>

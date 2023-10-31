@@ -33,8 +33,8 @@ public class Demand : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _maxCost, value);
     }
 
-    private string? _address;
-    public string? Address
+    private Address _address;
+    public Address Address
     {
         get => _address;
         set => this.RaiseAndSetIfChanged(ref _address, value);
