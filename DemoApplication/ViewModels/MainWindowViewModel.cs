@@ -1,23 +1,55 @@
-﻿using DemoApplication.Infrastructure.Stores;
+﻿using System.Reactive;
+using System.Windows.Input;
+using DemoApplication.Infrastructure.Stores;
+using DemoApplication.ViewModels.PageViewModels;
+using ReactiveUI;
 
 namespace DemoApplication.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {
-    private readonly NavigationStore _navigationStore;
-
-    public ViewModelBase MainMenuViewModel { get; set; }
-    public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
+    private ViewModelBase _currentViewModel;
+    public ViewModelBase CurrentViewModel
+    {
+        get => _currentViewModel;
+        set => this.RaiseAndSetIfChanged(ref _currentViewModel, value);
+    }
     
-    public MainWindowViewModel(NavigationStore navigationStore)
+    public MainWindowViewModel()
     {
-        _navigationStore = navigationStore;
-        _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
+        _currentViewModel = new MainMenuViewModel();
     }
 
-    private void OnCurrentViewModelChanged()
+    #region Команды
+
+    #region Команды навигации
+    
+    public void NavigateToRealEstatesCommand(object parameter)
     {
-        OnPropertyChanged(nameof(CurrentViewModel));
+        CurrentViewModel = new RealEstatesViewModel();
     }
+    public void NavigateToDemandsCommand(object parameter)
+    {
+        CurrentViewModel = new DemandsViewModel();
+    }
+    public void NavigateToSuppliesCommand(object parameter)
+    {
+        CurrentViewModel = new SuppliesViewModel();
+    }
+    public void NavigateToDealsCommand(object parameter)
+    {
+        CurrentViewModel = new DealsViewModel();
+    }
+    public void NavigateToClientsCommand(object parameter)
+    {
+        CurrentViewModel = new ClientsViewModel();
+    }
+    public void NavigateToRealtorsCommand(object parameter)
+    {
+        CurrentViewModel = new RealtorsViewModel();
+    }
+    #endregion
+
+    #endregion
 
 }

@@ -21,12 +21,14 @@ public partial class App : Application
         {
             NavigationStore navigationStore = new NavigationStore();
             navigationStore.CurrentViewModel = new MainMenuViewModel();
+            NavigationStoreProvider.InitializeNavigationStore(navigationStore);
             desktop.MainWindow = new MainWindow
             {
-                DataContext = new MainWindowViewModel(navigationStore),
+                DataContext = new MainWindowViewModel(),
             };
         }
 
         base.OnFrameworkInitializationCompleted();
     }
+
 }

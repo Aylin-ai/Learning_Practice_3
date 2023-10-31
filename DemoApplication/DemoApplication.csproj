@@ -11,6 +11,7 @@
     <ItemGroup>
         <Folder Include="Models\"/>
         <AvaloniaResource Include="Assets\**"/>
+        <Folder Include="Services\" />
     </ItemGroup>
 
 
@@ -23,5 +24,25 @@
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.2"/>
         <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.2"/>
         <PackageReference Include="MySqlConnector" Version="2.3.0-beta.3" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <Compile Update="Views\PageViews\MainMenuView.axaml.cs">
+        <DependentUpon>MainMenu.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\PageViews\ClientsView.axaml.cs">
+        <DependentUpon>Clients.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\PageViews\RealtorsView.axaml.cs">
+        <DependentUpon>Realtors.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\PageViews\SuppliesView.axaml.cs">
+        <DependentUpon>Supplies.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 </Project>

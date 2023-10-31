@@ -21,9 +21,6 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 [/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/MainWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/Pages/Clients.axaml]
-build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
-
 [/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/Pages/CreateClient.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
@@ -48,14 +45,17 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 [/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/Pages/Demands.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/Pages/MainMenu.axaml]
-build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
-
 [/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/Pages/RealEstates.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/Pages/Realtors.axaml]
+[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/PageViews/ClientsView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/Pages/Supplies.axaml]
+[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/PageViews/MainMenuView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/PageViews/RealtorsView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/PageViews/SuppliesView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml

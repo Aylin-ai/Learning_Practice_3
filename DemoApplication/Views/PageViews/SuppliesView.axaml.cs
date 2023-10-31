@@ -2,11 +2,11 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace DemoApplication.Views.Pages;
+namespace DemoApplication.Views.PageViews;
 
-public partial class MainMenu : UserControl
+public partial class SuppliesView : UserControl
 {
-    public MainMenu()
+    public SuppliesView()
     {
         InitializeComponent();
     }

@@ -1,0 +1,51 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:pageViewModels="clr-namespace:DemoApplication.ViewModels.PageViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="DemoApplication.Views.PageViews.MainMenuView"
+             x:DataType="pageViewModels:MainMenuViewModel">
+    <UserControl.Styles>
+        <Style Selector="Button.butt">
+            <Setter Property="Button.Margin" Value="10"/>
+            <Setter Property="Button.Background" Value="Black"/>
+            <Setter Property="Button.Foreground" Value="White"/>
+            <Setter Property="Button.BorderBrush" Value="White"/>
+            <Setter Property="Button.HorizontalAlignment" Value="Center"/>
+            <Setter Property="Button.VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="24"/>
+        </Style>
+    </UserControl.Styles>
+    
+    <StackPanel Orientation="Vertical"
+                Margin="10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+        <Button Content="Объекты недвижимости"
+                Classes="butt"
+                x:CompileBindings="False"
+                Command="{Binding $parent[Window].DataContext.NavigateToRealEstatesCommand}"/>
+        <Button Content="Предложения"
+                Classes="butt"
+                x:CompileBindings="False"
+                Command="{Binding $parent[Window].DataContext.NavigateToSuppliesCommand}"/>
+        <Button Content="Потребности"
+                Classes="butt"
+                x:CompileBindings="False"
+                Command="{Binding $parent[Window].DataContext.NavigateToDemandsCommand}"/>
+        <Button Content="Сделки"
+                Classes="butt"
+                x:CompileBindings="False"
+                Command="{Binding $parent[Window].DataContext.NavigateToDealsCommand}"/>
+        <Button Content="Клиенты"
+                Classes="butt" 
+                x:CompileBindings="False"
+                Command="{Binding $parent[Window].DataContext.NavigateToClientsCommand}"/>
+        <Button Content="Риелторы"
+                Classes="butt"
+                x:CompileBindings="False"
+                Command="{Binding $parent[Window].DataContext.NavigateToRealtorsCommand}"/>
+    </StackPanel>
+    
+</UserControl>
