@@ -2,9 +2,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="100" d:DesignHeight="100"
+             mc:Ignorable="d"
              xmlns:pageViewModel="clr-namespace:DemoApplication.ViewModels.PageViewModels"
              xmlns:model="clr-namespace:DemoApplication.Models"
+             xmlns:controls="clr-namespace:DemoApplication.Controls"
              x:Class="DemoApplication.Views.PageViews.ClientsView"
              x:CompileBindings="False">
     <UserControl.DataContext>
@@ -18,27 +19,42 @@
         </Grid.ColumnDefinitions>
         
         <DockPanel LastChildFill="True">
-            <ListBox ItemsSource="{Binding Clients}">
+            <ListBox ItemsSource="{Binding Clients}"
+                     SelectedItem="{Binding SelectedClient}">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="model:Client">
-                        <StackPanel Orientation="Vertical">
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="{Binding FirstName}"/>
-                                <Label Content="{Binding SecondName}"/>
-                                <Label Content="{Binding LastName}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="{Binding Phone}"/>
-                                <Label Content="{Binding Email}"/>
-                            </StackPanel>
-                        </StackPanel>
+                        <controls:ClientUserControl Client="{Binding}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </DockPanel>
         
-        <DockPanel Grid.Column="1">
-            <ComboBox/>
+        <DockPanel Grid.Column="1" LastChildFill="True"
+                   IsEnabled="{Binding IsClientSelected}">
+            <ComboBox HorizontalAlignment="Center"
+                      VerticalAlignment="Top"
+                      DockPanel.Dock="Top"
+                      ItemsSource="{Binding ComboBoxCollection}"
+                      SelectedItem="{Binding SelectedComboBoxItem}"/>
+            
+            <ListBox ItemsSource="{Binding SelectedClientDemands}"
+                     IsVisible="{Binding ListBoxDemandIsVisible}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="model:Demand">
+                        <controls:DemandControl Demand="{Binding}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            
+            <ListBox ItemsSource="{Binding SelectedClientSupplies}"
+                     IsVisible="{Binding ListBoxSupplyIsVisible}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="model:Supply">
+                        <controls:SupplyControl Supply="{Binding}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            
         </DockPanel>
         
     </Grid>

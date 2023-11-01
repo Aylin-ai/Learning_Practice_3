@@ -1,0 +1,43 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="DemoApplication.Controls.DemandControl"
+             x:CompileBindings="False">
+    <StackPanel Orientation="Vertical">
+        <StackPanel.DataContext>
+            <Binding Path="Demand" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+        </StackPanel.DataContext>
+        <StackPanel Orientation="Horizontal">
+                                <Label Content="Id потребности -"/>
+                                <Label Content="{Binding Id}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Риелтор -"></Label>
+                                <Label Content="{Binding Realtor.FirstName}"/>
+                                <Label Content="{Binding Realtor.SecondName}"/>
+                                <Label Content="{Binding Realtor.LastName}"/>
+                                <Label Content="{Binding Realtor.Share}"/>
+                                <Label Content="%"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Объект недвижимости -"/>
+                                <Label Content="{Binding RealEstateType}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="{Binding Address.City}"/>
+                                <Label Content="{Binding Address.Street}"/>
+                                <Label Content="{Binding Address.House}"/>
+                                <Label Content="{Binding Address.Apartment}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Мин. цена -"/>
+                                <Label Content="{Binding MinCost}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Макс. цена -"/>
+                                <Label Content="{Binding MaxCost}"/>
+                            </StackPanel>
+                        </StackPanel>
+</UserControl>

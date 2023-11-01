@@ -2,12 +2,29 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="DemoApplication.App"
              xmlns:local="using:DemoApplication"
+             xmlns:model="clr-namespace:DemoApplication.Models"
+             xmlns:controls="clr-namespace:DemoApplication.Controls"
              RequestedThemeVariant="Default">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
-
+    
+             
     <Application.DataTemplates>
         <local:ViewLocator/>
     </Application.DataTemplates>
+             
+             <Application.Resources>
+                 <DataTemplate x:Key="ClientTemplate" DataType="{x:Type model:Client}">
+                     <controls:ClientUserControl/>
+                 </DataTemplate>
+
+                 <DataTemplate x:Key="SupplyTemplate" DataType="{x:Type model:Supply}">
+                     <controls:SupplyControl/>
+                 </DataTemplate>
+                 
+                 <DataTemplate x:Key="DemandTemplate" DataType="{x:Type model:Demand}">
+                     <controls:DemandControl/>
+                 </DataTemplate>
+             </Application.Resources>
   
     <Application.Styles>
         <FluentTheme />

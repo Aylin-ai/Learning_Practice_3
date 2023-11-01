@@ -1,6 +1,8 @@
 using System;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
+using DemoApplication.Models;
 using DemoApplication.ViewModels;
 
 namespace DemoApplication;
@@ -12,7 +14,33 @@ public class ViewLocator : IDataTemplate
         var name = data.GetType().FullName!.Replace("ViewModel", "View");
         var type = Type.GetType(name);
 
-        if (type != null)
+        var dataType = data.GetType();
+
+        if (dataType == typeof(Client))
+        {
+            return new ContentControl
+            {
+                ContentTemplate = (IDataTemplate)Application.Current.Resources["ClientTemplate"],
+                Content = data
+            };
+        }
+        else if (dataType == typeof(Supply))
+        {
+            return new ContentControl
+            {
+                ContentTemplate = (IDataTemplate)Application.Current.Resources["SupplyTemplate"],
+                Content = data
+            };
+        }
+        else if (dataType == typeof(Demand))
+        {
+            return new ContentControl
+            {
+                ContentTemplate = (IDataTemplate)Application.Current.Resources["DemandTemplate"],
+                Content = data
+            };
+        }
+        else if (type != null)
         {
             return (Control)Activator.CreateInstance(type)!;
         }

@@ -18,6 +18,15 @@ build_property.ProjectDir = /home/aylin/RiderProjects/DemoApplication/DemoApplic
 [/home/aylin/RiderProjects/DemoApplication/DemoApplication/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Controls/ClientUserControl.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Controls/DemandControl.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Controls/SupplyControl.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [/home/aylin/RiderProjects/DemoApplication/DemoApplication/Views/MainWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
