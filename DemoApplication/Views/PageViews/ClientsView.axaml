@@ -55,6 +55,56 @@
                 </ListBox.ItemTemplate>
             </ListBox>
             
+            <DockPanel LastChildFill="True"
+                       IsVisible="{Binding IsUserEditingVisible}">
+                <Grid DockPanel.Dock="Bottom"
+                      Margin="5"
+                      HorizontalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                
+                    <Button Content="Сохранить"
+                            HorizontalAlignment="Center"
+                            Command="{Binding SaveClientCommand}"/>
+                    <Button Grid.Column="1" Content="Удалить"
+                            HorizontalAlignment="Center"
+                            Command="{Binding DeleteClientCommand}"/>
+                    <Button Grid.Column="2" Content="Отмена"
+                            HorizontalAlignment="Center"
+                            Command="{Binding CancelClientEditionCommand}"/>
+                </Grid>
+                
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Id -"/>
+                        <Label Content="{Binding SelectedClient.Id}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Имя -"/>
+                        <TextBox Text="{Binding SelectedClient.FirstName, Mode=TwoWay}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Фамилия -"/>
+                        <TextBox Text="{Binding SelectedClient.SecondName, Mode=TwoWay}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Отчество -"/>
+                        <TextBox Text="{Binding SelectedClient.LastName, Mode=TwoWay}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Номер телефона -"/>
+                        <TextBox Text="{Binding SelectedClient.Phone, Mode=TwoWay}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Email -"/>
+                        <TextBox Text="{Binding SelectedClient.Email, Mode=TwoWay}"/>
+                    </StackPanel>
+                </StackPanel>
+            </DockPanel>
+            
         </DockPanel>
         
     </Grid>

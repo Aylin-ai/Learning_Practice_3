@@ -1,8 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
+using DemoApplication.Infrastructure.Commands;
 using DemoApplication.Infrastructure.DB;
-using DemoApplication.Infrastructure.Stores;
 using DemoApplication.Models;
 using MySqlConnector;
 using ReactiveUI;
@@ -14,6 +14,14 @@ public class ClientsViewModel : ViewModelBase
     public ClientsViewModel()
     {
         GetAllClients();
+
+        #region Команды
+
+        SaveClientCommand = new LambdaCommand(OnSaveClientCommandExecuted);
+        DeleteClientCommand = new LambdaCommand(OnDeleteClientCommandExecuted);
+        CancelClientEditionCommand = new LambdaCommand(OnCancelClientEditionCommandExecuted);
+
+        #endregion
     }
     
     private ObservableCollection<Client> _clients = new ObservableCollection<Client>();
@@ -22,22 +30,75 @@ public class ClientsViewModel : ViewModelBase
         get => _clients;
         set => this.RaiseAndSetIfChanged(ref _clients, value);
     }
+    
+    private bool _isEditionSaved = true;
+    public bool IsEditionSaved
+    {
+        get => _isEditionSaved;
+        set => this.RaiseAndSetIfChanged(ref _isEditionSaved, value);
+    }
 
+    private bool _isCancellingHappening;
+    public bool IsCancellingHappening
+    {
+        get => _isCancellingHappening;
+        set => this.RaiseAndSetIfChanged(ref _isCancellingHappening, value);
+    }
+
+    private Client _oldSelectedClient = new Client();
+    public Client OldSelectedClient
+    {
+        get => _oldSelectedClient;
+        set => this.RaiseAndSetIfChanged(ref _oldSelectedClient, value);
+    }
+
+    private int _countOfSelections = 1;
+    
     private Client _selectedClient;
     public Client SelectedClient
     {
         get => _selectedClient;
         set
         {
-            this.RaiseAndSetIfChanged(ref _selectedClient, value);
-            IsClientSelected = true;
-            SelectedClientDemands.Clear();
-            SelectedClientSupplies.Clear();
-            SelectedComboBoxItem = "Нет";
-            SelectedClientSupplies.Clear();
-            SelectedClientDemands.Clear();
-            GetSpecificClientSupplies(SelectedClient.Id);
-            GetSpecificClientDemands(SelectedClient.Id);
+            if (_countOfSelections == 1)
+            {
+                this.RaiseAndSetIfChanged(ref _selectedClient, value);
+                _countOfSelections++;
+                OldSelectedClient = GetSpecificClient(SelectedClient.Id);
+                IsClientSelected = true;
+                SelectedClientDemands.Clear();
+                SelectedClientSupplies.Clear();
+                SelectedComboBoxItem = "Нет";
+                GetSpecificClientSupplies(SelectedClient.Id);
+                GetSpecificClientDemands(SelectedClient.Id);
+                return;
+            }
+            if (IsCancellingHappening)
+            {
+                SelectedClientDemands.Clear();
+                SelectedClientSupplies.Clear();
+                SelectedComboBoxItem = "Нет";
+                this.RaiseAndSetIfChanged(ref _selectedClient, OldSelectedClient);
+                IsCancellingHappening = false;
+                return;
+            }
+            OldSelectedClient = GetSpecificClient(SelectedClient.Id);
+            if (!IsTwoClientsEven(OldSelectedClient, SelectedClient))
+                IsEditionSaved = false;
+            if (IsEditionSaved == false)
+            { 
+                Console.WriteLine("Вы не сохранили изменения. Либо сохраните, либо отмените их");
+            }
+            else
+            {
+                this.RaiseAndSetIfChanged(ref _selectedClient, value);
+                IsClientSelected = true;
+                SelectedClientDemands.Clear();
+                SelectedClientSupplies.Clear();
+                SelectedComboBoxItem = "Нет";
+                GetSpecificClientSupplies(SelectedClient.Id);
+                GetSpecificClientDemands(SelectedClient.Id);
+            }
         }
     }
 
@@ -50,7 +111,7 @@ public class ClientsViewModel : ViewModelBase
 
     private ObservableCollection<string> _comboBoxCollection = new ObservableCollection<string>()
     {
-        "Нет", "Предложения", "Потребности"
+        "Нет", "Предложения", "Потребности", "Изменить данные"
     };
     public ObservableCollection<string> ComboBoxCollection
     {
@@ -70,16 +131,25 @@ public class ClientsViewModel : ViewModelBase
             {
                 ListBoxSupplyIsVisible = false;
                 ListBoxDemandIsVisible = false;
+                IsUserEditingVisible = false;
             }
             else if (value == "Предложения")
             {
                 ListBoxDemandIsVisible = false;
                 ListBoxSupplyIsVisible = true;
+                IsUserEditingVisible = false;
             }
             else if (value == "Потребности")
             {
                 ListBoxDemandIsVisible = true;
                 ListBoxSupplyIsVisible = false;
+                IsUserEditingVisible = false;
+            }
+            else if (value == "Изменить данные")
+            {
+                ListBoxDemandIsVisible = false;
+                ListBoxSupplyIsVisible = false;
+                IsUserEditingVisible = true;
             }
         }
     }
@@ -98,6 +168,13 @@ public class ClientsViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _listBoxSupplyIsVisible, value);
     }
 
+    private bool _isUserEditingVisible = false;
+    public bool IsUserEditingVisible
+    {
+        get => _isUserEditingVisible;
+        set => this.RaiseAndSetIfChanged(ref _isUserEditingVisible, value);
+    }
+
     private ObservableCollection<Demand> _selectedClientDemands = new ObservableCollection<Demand>();
     public ObservableCollection<Demand> SelectedClientDemands
     {
@@ -111,6 +188,130 @@ public class ClientsViewModel : ViewModelBase
         get => _selectedClientSupplies;
         set => this.RaiseAndSetIfChanged(ref _selectedClientSupplies, value);
     }
+
+    #region Команды
+
+    #region Команды изменения бд
+
+    public ICommand SaveClientCommand { get; }
+    public ICommand DeleteClientCommand { get; }
+    public ICommand CancelClientEditionCommand { get; }
+
+    private void OnSaveClientCommandExecuted(object parameter)
+    {
+        if ((SelectedClient.Email == "" || SelectedClient.Email == "Нет") && 
+            (SelectedClient.Phone == "" || SelectedClient.Phone == "Нет"))
+        {
+            Console.WriteLine("Введите телефон или email");
+            OnCancelClientEditionCommandExecuted();
+        }
+        
+        MySqlConnection connection = DBUtils.GetDBConnection();
+
+        try
+        {
+            connection.Open();
+            string query1 = "update client set " +
+                            "FirstName = @firstName, " +
+                            "SecondName = @secondName, " +
+                            "LastName = @lastName, " +
+                            "Phone = @phone, " +
+                            "Email = @email " +
+                            "where id = @id";
+
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = query1;
+
+            cmd.Parameters.AddWithValue("@id", SelectedClient.Id);
+            cmd.Parameters.AddWithValue("@firstName", SelectedClient.FirstName);
+            cmd.Parameters.AddWithValue("@secondName", SelectedClient.SecondName);
+            cmd.Parameters.AddWithValue("@lastName", SelectedClient.LastName);
+            cmd.Parameters.AddWithValue("@phone", SelectedClient.Phone);
+            cmd.Parameters.AddWithValue("@email", SelectedClient.Email);
+
+            cmd.ExecuteNonQuery();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        finally
+        {
+            connection.Dispose();
+            connection.Close();
+        }
+    }
+    private void OnDeleteClientCommandExecuted(object parameter)
+    {
+        MySqlConnection connection = DBUtils.GetDBConnection();
+
+        try
+        {
+            connection.Open();
+            string query1 = "select * from supply " +
+                            "where ClientId = @id;";
+            string query2 = "select * from demand " +
+                            "where ClientId = @id;";
+            string query3 = "delete from client " +
+                            "where id = @id;";
+
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = query1;
+            cmd.Parameters.AddWithValue("@id", SelectedClient.Id);
+
+            var reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    Console.WriteLine($"Невозможно удалить клиента, " +
+                                      $"участвующего в предложении №{reader.GetInt32(0)}");
+                    return;
+                }
+            }
+            reader.Close();
+
+            cmd.CommandText = query2;
+            reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    Console.WriteLine($"Невозможно удалить клиента, " +
+                                      $"участвующего в потребности №{reader.GetInt32(0)}");
+                    return;
+                }
+            }
+            reader.Close();
+
+            cmd.CommandText = query3;
+            cmd.ExecuteNonQuery();
+            GetAllClients();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        finally
+        {
+            connection.Dispose();
+            connection.Close();
+        }
+    }
+    private void OnCancelClientEditionCommandExecuted(object parameter = null)
+    {
+        IsCancellingHappening = true;
+        SelectedClient = OldSelectedClient;
+        IsEditionSaved = true;
+        GetAllClients();
+        _countOfSelections = 1;
+    }
+
+    #endregion
+
+    #endregion
 
     private void GetAllClients()
     {
@@ -424,5 +625,66 @@ public class ClientsViewModel : ViewModelBase
             connection.Close();
             OnPropertyChanged(nameof(SelectedClientSupplies));
         }
+    }
+    
+    private Client GetSpecificClient(int id)
+    {
+        MySqlConnection connection = DBUtils.GetDBConnection();
+
+        try
+        {
+            connection.Open();
+            string query = "select * from client where id = @id;";
+
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = query;
+            cmd.Parameters.AddWithValue("@id", id);
+
+            var reader = cmd.ExecuteReader();
+
+            Client client = new Client();
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    client = new Client()
+                    {
+                        Id = reader.GetInt32(0),
+                        FirstName = reader.IsDBNull(1) ? "Нет" : reader.GetString(1),
+                        SecondName = reader.IsDBNull(2) ? "Нет" : reader.GetString(2),
+                        LastName = reader.IsDBNull(3) ? "Нет" : reader.GetString(3),
+                        Phone = reader.IsDBNull(4) ? "Нет" : reader.GetString(4),
+                        Email = reader.IsDBNull(5) ? "Нет" : reader.GetString(5)
+                    };
+                }
+            }
+
+            return client;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return null;
+        }
+        finally
+        {
+            connection.Dispose();
+            connection.Close();
+            OnPropertyChanged(nameof(Clients));
+        }
+    }
+    
+    private bool IsTwoClientsEven(Client client1, Client client2)
+    {
+        if (client1.FirstName != client2.FirstName ||
+            client1.SecondName != client2.SecondName ||
+            client1.LastName != client2.LastName ||
+            client1.Phone != client2.Phone ||
+            client1.Email != client2.Email ||
+            client1.Id != client2.Id)
+            return false;
+        return true;
     }
 }

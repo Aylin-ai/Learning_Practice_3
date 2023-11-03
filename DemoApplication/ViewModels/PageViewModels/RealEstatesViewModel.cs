@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using DemoApplication.Infrastructure.Commands;
 using DemoApplication.Infrastructure.DB;
@@ -99,6 +100,15 @@ public class RealEstatesViewModel : ViewModelBase
 
     private void OnSaveRealEstateCommandExecuted(object parameter)
     {
+        if (SelectedEstate.Coordinates.Latitude > 90 ||
+            SelectedEstate.Coordinates.Latitude < -90 ||
+            SelectedEstate.Coordinates.Longitude > 180 ||
+            SelectedEstate.Coordinates.Longitude < -180)
+        {
+            Console.WriteLine("Широта или долгота приняли некорректное значение");
+            OnCancelRealEstateEditionCommandExecuted();
+        }
+        
         MySqlConnection connection = DBUtils.GetDBConnection();
 
         try
@@ -211,7 +221,7 @@ public class RealEstatesViewModel : ViewModelBase
             connection.Close();
         }
     }
-    private void OnCancelRealEstateEditionCommandExecuted(object parameter)
+    private void OnCancelRealEstateEditionCommandExecuted(object parameter = null)
     {
         IsCancellingHappening = true;
         SelectedEstate = OldSelectedRealEstate;
