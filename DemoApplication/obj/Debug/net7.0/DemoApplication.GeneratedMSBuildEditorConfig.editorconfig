@@ -24,6 +24,9 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 [/home/aylin/RiderProjects/DemoApplication/DemoApplication/Controls/DemandControl.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[/home/aylin/RiderProjects/DemoApplication/DemoApplication/Controls/RealEstateControl.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [/home/aylin/RiderProjects/DemoApplication/DemoApplication/Controls/SupplyControl.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 

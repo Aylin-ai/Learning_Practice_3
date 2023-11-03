@@ -7,6 +7,7 @@
         <entry key="DemoApplication/Controls/ClientControl.axaml" value="DemoApplication/DemoApplication.csproj" />
         <entry key="DemoApplication/Controls/ClientUserControl.axaml" value="DemoApplication/DemoApplication.csproj" />
         <entry key="DemoApplication/Controls/DemandControl.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Controls/RealEstateControl.axaml" value="DemoApplication/DemoApplication.csproj" />
         <entry key="DemoApplication/Controls/SupplyControl.axaml" value="DemoApplication/DemoApplication.csproj" />
         <entry key="DemoApplication/Views/MainWindow.axaml" value="DemoApplication/DemoApplication.csproj" />
         <entry key="DemoApplication/Views/PageViews/Clients.axaml" value="DemoApplication/DemoApplication.csproj" />

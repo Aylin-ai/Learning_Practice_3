@@ -24,6 +24,10 @@
                  <DataTemplate x:Key="DemandTemplate" DataType="{x:Type model:Demand}">
                      <controls:DemandControl/>
                  </DataTemplate>
+                 
+                 <DataTemplate x:Key="RealEstateTemplate" DataType="{x:Type model:RealEstate}">
+                     <controls:RealEstateControl/>
+                 </DataTemplate>
              </Application.Resources>
   
     <Application.Styles>
