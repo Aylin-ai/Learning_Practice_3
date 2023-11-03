@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:pageViewModels="clr-namespace:DemoApplication.ViewModels.PageViewModels"
              xmlns:models="clr-namespace:DemoApplication.Models"
+             xmlns:controls="clr-namespace:DemoApplication.Controls"
              mc:Ignorable="d" d:DesignWidth="100" d:DesignHeight="100"
              x:Class="DemoApplication.Views.PageViews.SuppliesView"
              x:CompileBindings="False">
@@ -19,50 +20,173 @@
         </Grid.ColumnDefinitions>
         
         <DockPanel LastChildFill="True">
-            <ListBox ItemsSource="{Binding Supplies}">
+            <ListBox ItemsSource="{Binding Supplies}"
+                     SelectedItem="{Binding SelectedSupply}">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="models:Supply">
-                        <StackPanel Orientation="Vertical">
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Клиент -"></Label>
-                                <Label Content="{Binding Client.FirstName}"/>
-                                <Label Content="{Binding Client.SecondName}"/>
-                                <Label Content="{Binding Client.LastName}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="{Binding Client.Phone}"/>
-                                <Label Content="{Binding Client.Email}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Риелтор -"></Label>
-                                <Label Content="{Binding Realtor.FirstName}"/>
-                                <Label Content="{Binding Realtor.SecondName}"/>
-                                <Label Content="{Binding Realtor.LastName}"/>
-                                <Label Content="{Binding Realtor.Share}"/>
-                                <Label Content="%"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Объект недвижимости -"/>
-                                <Label Content="{Binding RealEstate.Type}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="{Binding RealEstate.Address.City}"/>
-                                <Label Content="{Binding RealEstate.Address.Street}"/>
-                                <Label Content="{Binding RealEstate.Address.House}"/>
-                                <Label Content="{Binding RealEstate.Address.Apartment}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Цена -"/>
-                                <Label Content="{Binding Cost}"/>
-                            </StackPanel>
-                        </StackPanel>
+                        <controls:SupplyControl Supply="{Binding}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </DockPanel>
         
-        <DockPanel Grid.Column="1">
-            <ComboBox/>
+        <DockPanel Grid.Column="1"
+                   IsEnabled="{Binding IsSupplySelected}">
+            
+            <ComboBox HorizontalAlignment="Center"
+                      DockPanel.Dock="Top"
+                      ItemsSource="{Binding ComboBoxCollection}"
+                      SelectedItem="{Binding SelectedComboBoxItem}"/>
+            
+            <DockPanel LastChildFill="True"
+                       IsVisible="{Binding IsUserEditingVisible}">
+                <Grid DockPanel.Dock="Bottom"
+                      Margin="5"
+                      HorizontalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                
+                    <Button Content="Сохранить"
+                            HorizontalAlignment="Center"
+                            Command="{Binding }"/>
+                    <Button Grid.Column="1" Content="Удалить"
+                            HorizontalAlignment="Center"
+                            Command="{Binding }"/>
+                    <Button Grid.Column="2" Content="Отмена"
+                            HorizontalAlignment="Center"
+                            Command="{Binding }"/>
+                </Grid>
+                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.9*"/>
+                        <RowDefinition Height="0.9*"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    
+                    <StackPanel Grid.Row="0" Orientation="Vertical">
+                        
+                        <Label Content="Клиент"/>
+                        
+                        <ComboBox ItemsSource="{Binding ComboBoxCollectionOfClients}"
+                                  SelectedItem="{Binding SelectedComboBoxClient}"/>
+                        
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Id -"/>
+                                <Label Content="{Binding SelectedClient.Id}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Имя -"/>
+                                <Label Content="{Binding SelectedClient.FirstName}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Фамилия -"/>
+                                <Label Content="{Binding SelectedClient.SecondName}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Отчество -"/>
+                                <Label Content="{Binding SelectedClient.LastName}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Номер телефона -"/>
+                                <Label Content="{Binding SelectedClient.Phone}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Email -"/>
+                                <Label Content="{Binding SelectedClient.Email}"/>
+                            </StackPanel>
+                        </StackPanel>
+                        
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Row="1" Orientation="Vertical">
+                        
+                        <Label Content="Риелтор"/>
+                        
+                        <ComboBox ItemsSource="{Binding ComboBoxCollectionOfRealtors}"
+                                  SelectedItem="{Binding SelectedComboBoxRealtor}"/>
+                        
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Id -"/>
+                                <Label Content="{Binding SelectedRealtor.Id}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Имя -"/>
+                                <Label Content="{Binding SelectedRealtor.FirstName}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Фамилия -"/>
+                                <Label Content="{Binding SelectedRealtor.SecondName}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Отчество -"/>
+                                <Label Content="{Binding SelectedRealtor.LastName}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Доля -"/>
+                                <Label Content="{Binding SelectedRealtor.Share}"/>
+                            </StackPanel>
+                        </StackPanel>
+                        
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Row="2" Orientation="Vertical">
+                        
+                        <Label Content="Объект недвижимости"/>
+                        
+                        <ComboBox ItemsSource="{Binding ComboBoxCollectionOfFreeRealEstates}"
+                                  SelectedItem="{Binding SelectedComboBoxRealEstate}"/>
+                        
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Id -"></Label>
+                                <Label Content="{Binding SelectedRealEstate.Id}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Адрес -"/>
+                                <Label Content="г."/>
+                                <Label Content="{Binding SelectedRealEstate.Address.City}"/>
+                                <Label Content="ул."/>
+                                <Label Content="{Binding SelectedRealEstate.Address.Street}"/>
+                                <Label Content="д."/>
+                                <Label Content="{Binding SelectedRealEstate.Address.House}"/>
+                                <Label Content="кв."/>
+                                <Label Content="{Binding SelectedRealEstate.Address.Apartment}"/>
+                            </StackPanel>
+                            <Label Content="Координаты"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Широта - "/>
+                                <Label Content="{Binding SelectedRealEstate.Coordinates.Latitude}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Долгота -"/>
+                                <Label Content="{Binding SelectedRealEstate.Coordinates.Longitude}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Этаж - "/>
+                                <Label Content="{Binding SelectedRealEstate.MoreInformation.Floor}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Количество комнат - "/>
+                                <Label Content="{Binding SelectedRealEstate.MoreInformation.Rooms}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Площадь - "/>
+                                <Label Content="{Binding SelectedRealEstate.MoreInformation.TotalArea}"/>
+                            </StackPanel>
+                        </StackPanel>
+                        
+                    </StackPanel>
+                    
+                </Grid>
+                
+            </DockPanel>
+            
         </DockPanel>
         
     </Grid>
