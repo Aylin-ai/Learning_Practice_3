@@ -1,6 +1,8 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
+using DemoApplication.Infrastructure.Commands;
 using DemoApplication.Infrastructure.DB;
 using DemoApplication.Models;
 using MySqlConnector;
@@ -16,6 +18,14 @@ public class SuppliesViewModel : ViewModelBase
         GetAllClients();
         GetAllRealtors();
         GetAllFreeRealEstates();
+
+        #region Команды
+
+        SaveSupplyCommand = new LambdaCommand(OnSaveSupplyCommandExecuted);
+        DeleteSupplyCommand = new LambdaCommand(OnDeleteSupplyCommandExecuted);
+        CancelSupplyEditionCommand = new LambdaCommand(OnCancelSupplyEditionCommandExecuted);
+
+        #endregion
     }
 
     #region Коллекции
@@ -90,6 +100,7 @@ public class SuppliesViewModel : ViewModelBase
         set
         {
             this.RaiseAndSetIfChanged(ref _selectedClient, value);
+            SelectedSupply.Client = value;
         }
     }
 
@@ -100,10 +111,11 @@ public class SuppliesViewModel : ViewModelBase
         set
         {
             this.RaiseAndSetIfChanged(ref _selectedComboBoxClient, value);
-            SelectedClient = Clients.First(x => x.Id.ToString() == value.Split(' ')[0] &&
-                                                x.FirstName == value.Split(' ')[1] &&
-                                                x.SecondName == value.Split(' ')[2] &&
-                                                x.LastName == value.Split(' ')[3]);
+            if (value != null && value != "")
+                SelectedClient = Clients.First(x => x.Id.ToString() == value.Split(' ')[0] &&
+                                                    x.FirstName == value.Split(' ')[1] &&
+                                                    x.SecondName == value.Split(' ')[2] &&
+                                                    x.LastName == value.Split(' ')[3]);
         }
     }
 
@@ -114,6 +126,7 @@ public class SuppliesViewModel : ViewModelBase
         set
         {
             this.RaiseAndSetIfChanged(ref _selectedRealtor, value);
+            SelectedSupply.Realtor = value;
         }
     }
 
@@ -124,10 +137,11 @@ public class SuppliesViewModel : ViewModelBase
         set
         {
             this.RaiseAndSetIfChanged(ref _selectedComboBoxRealtor, value);
-            SelectedRealtor = Realtors.First(x => x.Id.ToString() == value.Split(' ')[0] &&
-                                                x.FirstName == value.Split(' ')[1] &&
-                                                x.SecondName == value.Split(' ')[2] &&
-                                                x.LastName == value.Split(' ')[3]);
+            if (value != null && value != "")
+                SelectedRealtor = Realtors.First(x => x.Id.ToString() == value.Split(' ')[0] &&
+                                                    x.FirstName == value.Split(' ')[1] &&
+                                                    x.SecondName == value.Split(' ')[2] &&
+                                                    x.LastName == value.Split(' ')[3]);
         }
     }
 
@@ -138,6 +152,7 @@ public class SuppliesViewModel : ViewModelBase
         set
         {
             this.RaiseAndSetIfChanged(ref _selectedRealEstate, value);
+            SelectedSupply.RealEstate = value;
         }
     }
     
@@ -148,10 +163,20 @@ public class SuppliesViewModel : ViewModelBase
         set
         {
             this.RaiseAndSetIfChanged(ref _selectedComboBoxRealEstate, value);
-            SelectedRealEstate = FreeRealEstates.First(x => x.Id.ToString() == value.Split(' ')[0] &&
-                                                  x.Type == value.Split(' ')[1]);
+            if (value != null && value != "")
+                SelectedRealEstate = FreeRealEstates.First(x => x.Id.ToString() == value.Split(' ')[0] &&
+                                                      x.Type == value.Split(' ')[1]);
         }
     }
+    
+    private Supply _oldSelectedSupply = new Supply();
+    public Supply OldSelectedSupply
+    {
+        get => _oldSelectedSupply;
+        set => this.RaiseAndSetIfChanged(ref _oldSelectedSupply, value);
+    }
+    
+    private int _countOfSelections = 1;
 
     private Supply _selectedSupply;
     public Supply SelectedSupply
@@ -159,16 +184,60 @@ public class SuppliesViewModel : ViewModelBase
         get => _selectedSupply;
         set
         {
-            this.RaiseAndSetIfChanged(ref _selectedSupply, value);
-            GetAllFreeRealEstates();
-            IsSupplySelected = true;
-            SelectedComboBoxClient = $"{value.Client.Id} {value.Client.FirstName} " +
-                                     $"{value.Client.SecondName} {value.Client.LastName}";
-            SelectedComboBoxRealtor = $"{value.Realtor.Id} {value.Realtor.FirstName} " +
-                                      $"{value.Realtor.SecondName} {value.Realtor.LastName}";
-            FreeRealEstates.Add(value.RealEstate);
-            ComboBoxCollectionOfFreeRealEstates.Add($"{value.RealEstate.Id} {value.RealEstate.Type}");
-            SelectedComboBoxRealEstate = $"{value.RealEstate.Id} {value.RealEstate.Type}";
+            if (value == null)
+            {
+                this.RaiseAndSetIfChanged(ref _selectedSupply, value);
+                return;
+            }
+            if (_countOfSelections == 1)
+            {
+                _countOfSelections++;
+                this.RaiseAndSetIfChanged(ref _selectedSupply, value);
+                OldSelectedSupply = GetSpecificSupply(SelectedSupply.Id);
+                GetAllFreeRealEstates();
+                IsSupplySelected = true;
+                SelectedComboBoxClient = $"{value.Client.Id} {value.Client.FirstName} " +
+                                         $"{value.Client.SecondName} {value.Client.LastName}";
+                SelectedComboBoxRealtor = $"{value.Realtor.Id} {value.Realtor.FirstName} " +
+                                          $"{value.Realtor.SecondName} {value.Realtor.LastName}";
+                FreeRealEstates.Add(value.RealEstate);
+                ComboBoxCollectionOfFreeRealEstates.Add($"{value.RealEstate.Id} {value.RealEstate.Type}");
+                SelectedComboBoxRealEstate = $"{value.RealEstate.Id} {value.RealEstate.Type}";
+                return;
+            }
+            if (IsCancellingHappening)
+            {
+                IsSupplySelected = false;
+                SelectedComboBoxItem = "Нет";
+                SelectedComboBoxClient = "";
+                SelectedComboBoxRealtor = "";
+                SelectedComboBoxRealEstate = "";
+                GetAllFreeRealEstates();
+                this.RaiseAndSetIfChanged(ref _selectedSupply, OldSelectedSupply);
+                IsCancellingHappening = false;
+                return;
+            }
+            OldSelectedSupply = GetSpecificSupply(SelectedSupply.Id);
+            if (!IsTwoSuppliesEven(OldSelectedSupply, SelectedSupply))
+                IsEditionSaved = false;
+            if (IsEditionSaved == false)
+            { 
+                Console.WriteLine("Вы не сохранили изменения. Либо сохраните, либо отмените их");
+            }
+            else
+            {
+                this.RaiseAndSetIfChanged(ref _selectedSupply, value);
+                OldSelectedSupply = GetSpecificSupply(SelectedSupply.Id);
+                GetAllFreeRealEstates();
+                IsSupplySelected = true;
+                SelectedComboBoxClient = $"{value.Client.Id} {value.Client.FirstName} " +
+                                         $"{value.Client.SecondName} {value.Client.LastName}";
+                SelectedComboBoxRealtor = $"{value.Realtor.Id} {value.Realtor.FirstName} " +
+                                          $"{value.Realtor.SecondName} {value.Realtor.LastName}";
+                FreeRealEstates.Add(value.RealEstate);
+                ComboBoxCollectionOfFreeRealEstates.Add($"{value.RealEstate.Id} {value.RealEstate.Type}");
+                SelectedComboBoxRealEstate = $"{value.RealEstate.Id} {value.RealEstate.Type}";
+            }
         }
     }
 
@@ -207,6 +276,135 @@ public class SuppliesViewModel : ViewModelBase
         get => _isUserEditingVisible;
         set => this.RaiseAndSetIfChanged(ref _isUserEditingVisible, value);
     }
+    
+    private bool _isEditionSaved = true;
+    public bool IsEditionSaved
+    {
+        get => _isEditionSaved;
+        set => this.RaiseAndSetIfChanged(ref _isEditionSaved, value);
+    }
+
+    private bool _isCancellingHappening;
+    public bool IsCancellingHappening
+    {
+        get => _isCancellingHappening;
+        set => this.RaiseAndSetIfChanged(ref _isCancellingHappening, value);
+    }
+
+    #endregion
+    
+    #region Команды
+
+    #region Команды изменения бд
+
+    public ICommand SaveSupplyCommand { get; }
+    public ICommand DeleteSupplyCommand { get; }
+    public ICommand CancelSupplyEditionCommand { get; }
+
+    private void OnSaveSupplyCommandExecuted(object parameter)
+    {
+        if (SelectedSupply.Cost == null || SelectedSupply.Cost == 0)
+        {
+            Console.WriteLine("Вы не выбрали цену");
+            OnCancelSupplyEditionCommandExecuted();
+        }
+        
+        MySqlConnection connection = DBUtils.GetDBConnection();
+
+        try
+        {
+            connection.Open();
+            string query1 = "update supply set " +
+                            "Cost = @cost, " +
+                            "ClientId = @clientId, " +
+                            "RealtorId = @realtorId, " +
+                            "RealEstateId = @realEstateId " +
+                            "where id = @id";
+
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = query1;
+
+            cmd.Parameters.AddWithValue("@id", SelectedSupply.Id);
+            cmd.Parameters.AddWithValue("@cost", SelectedSupply.Cost);
+            cmd.Parameters.AddWithValue("@clientId", SelectedClient.Id);
+            cmd.Parameters.AddWithValue("@realtorId", SelectedRealtor.Id);
+            cmd.Parameters.AddWithValue("@realEstateId", SelectedRealEstate.Id);
+
+            cmd.ExecuteNonQuery();
+            IsEditionSaved = true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        finally
+        {
+            connection.Dispose();
+            connection.Close();
+        }
+    }
+    private void OnDeleteSupplyCommandExecuted(object parameter)
+    {
+        MySqlConnection connection = DBUtils.GetDBConnection();
+
+        try
+        {
+            connection.Open();
+            string query1 = "select * from deal " +
+                            "where SupplyId = @id;";
+            string query2 = "delete from supply " +
+                            "where id = @id;";
+
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = query1;
+            cmd.Parameters.AddWithValue("@id", SelectedSupply.Id);
+
+            var reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    Console.WriteLine($"Невозможно удалить предложение, " +
+                                      $"участвующее в сделке №{reader.GetInt32(0)}");
+                    return;
+                }
+            }
+            reader.Close();
+
+            cmd.CommandText = query2;
+            cmd.ExecuteNonQuery();
+            SelectedSupply = null;
+            IsSupplySelected = false;
+            SelectedComboBoxItem = "Нет";
+            SelectedComboBoxClient = "";
+            SelectedComboBoxRealtor = "";
+            SelectedComboBoxRealEstate = "";
+            GetAllSupplies();
+            GetAllFreeRealEstates();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        finally
+        {
+            connection.Dispose();
+            connection.Close();
+        }
+    }
+    private void OnCancelSupplyEditionCommandExecuted(object parameter = null)
+    {
+        IsCancellingHappening = true;
+        SelectedSupply = OldSelectedSupply;
+        IsEditionSaved = true;
+        GetAllSupplies();
+        GetAllFreeRealEstates();
+        _countOfSelections = 1;
+    }
+
+    #endregion
 
     #endregion
 
@@ -223,10 +421,11 @@ public class SuppliesViewModel : ViewModelBase
             string query1 = "Select * from client where id = @clientId;";
             string query2 = "Select * from realtor where id = @realtorId;";
             string query3 = "Select * from address where RealEstateId = @realEstateId;";
+            string query4 = "Select * from coordinates where RealEstateId = @realEstateId;";
             
-            string checkQuery1 = "Select * from apartment where RealEstateId = @id";
-            string checkQuery2 = "Select * from house where RealEstateId = @id";
-            string checkQuery3 = "Select * from land where RealEstateId = @id";
+            string checkQuery1 = "Select * from apartment where RealEstateId = @realEstateId";
+            string checkQuery2 = "Select * from house where RealEstateId = @realEstateId";
+            string checkQuery3 = "Select * from land where RealEstateId = @realEstateId";
 
             MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = connection;
@@ -314,22 +513,52 @@ public class SuppliesViewModel : ViewModelBase
                 } 
                 readerInside.Close();
                 
-                
-                checkComand.Parameters.AddWithValue("@id", supply.RealEstate.Id); 
+                checkComand.CommandText = query4; 
+                readerInside = checkComand.ExecuteReader(); 
+                if (readerInside.HasRows) 
+                {
+                    while (readerInside.Read())
+                    {
+                        supply.RealEstate.Coordinates = new Coordinates();
+                        supply.RealEstate.Coordinates.Latitude = readerInside.IsDBNull(1) ? 0 : readerInside.GetFloat(1);
+                        supply.RealEstate.Coordinates.Longitude = readerInside.IsDBNull(2) ? 0 : readerInside.GetFloat(2);
+                    }
+                } 
+                readerInside.Close();
                 
                 checkComand.CommandText = checkQuery1;
                 readerInside = checkComand.ExecuteReader(); 
-                if (readerInside.HasRows)
-                {
-                    supply.RealEstate.Type = "Квартира";
+                
+                if (readerInside.HasRows) 
+                { 
+                    while (readerInside.Read())
+                    {
+                        supply.RealEstate.MoreInformation = new RealEstateMoreInformation()
+                        {
+                            Floor = reader.IsDBNull(1) ? 0 : readerInside.GetInt32(1),
+                            Rooms = readerInside.IsDBNull(2) ? 0 : readerInside.GetInt32(2),
+                            TotalArea = reader.IsDBNull(3) ? 0 : readerInside.GetFloat(3)
+
+                        };
+                        supply.RealEstate.Type = "Квартира";
+                    }
                 } 
                 readerInside.Close();
                 
                 checkComand.CommandText = checkQuery2; 
                 readerInside = checkComand.ExecuteReader(); 
                 if (readerInside.HasRows) 
-                {
-                    supply.RealEstate.Type = "Дом";
+                { 
+                    while (readerInside.Read()) 
+                    { 
+                        supply.RealEstate.MoreInformation = new RealEstateMoreInformation() 
+                        { 
+                            Floor = reader.IsDBNull(1) ? 0 : readerInside.GetInt32(1), 
+                            Rooms = readerInside.IsDBNull(2) ? 0 : readerInside.GetInt32(2), 
+                            TotalArea = reader.IsDBNull(3) ? 0 : readerInside.GetFloat(3)
+                        }; 
+                        supply.RealEstate.Type = "Дом";
+                    }
                 }
                 readerInside.Close();
                 
@@ -337,7 +566,14 @@ public class SuppliesViewModel : ViewModelBase
                 readerInside = checkComand.ExecuteReader(); 
                 if (readerInside.HasRows) 
                 { 
-                    supply.RealEstate.Type = "Земля";
+                    while (readerInside.Read()) 
+                    { 
+                        supply.RealEstate.MoreInformation = new RealEstateMoreInformation() 
+                        { 
+                            TotalArea = reader.IsDBNull(1) ? 0 : readerInside.GetFloat(1)
+                        };
+                        supply.RealEstate.Type = "Земля";
+                    }
                 } 
                 readerInside.Close();
             }
@@ -356,6 +592,7 @@ public class SuppliesViewModel : ViewModelBase
 
     private void GetAllClients()
     {
+        ComboBoxCollectionOfClients.Clear();
         Clients.Clear();
         MySqlConnection connection = DBUtils.GetDBConnection();
 
@@ -405,6 +642,7 @@ public class SuppliesViewModel : ViewModelBase
     
     private void GetAllRealtors()
     {
+        ComboBoxCollectionOfRealtors.Clear();
         Realtors.Clear();
         MySqlConnection connection = DBUtils.GetDBConnection();
 
@@ -453,6 +691,7 @@ public class SuppliesViewModel : ViewModelBase
     
     private void GetAllFreeRealEstates()
     {
+        ComboBoxCollectionOfFreeRealEstates.Clear();
         FreeRealEstates.Clear();
         MySqlConnection connection = DBUtils.GetDBConnection();
 
@@ -579,5 +818,160 @@ public class SuppliesViewModel : ViewModelBase
             connection.Close();
             OnPropertyChanged(nameof(FreeRealEstates));
         }
+    }
+
+    private Supply GetSpecificSupply(int id)
+    {
+        MySqlConnection connection = DBUtils.GetDBConnection();
+
+        try
+        {
+            connection.Open();
+            string query = "SELECT * from supply where supply.id = @supplyId;";
+
+            string query1 = "Select * from client where id = @clientId;";
+            string query2 = "Select * from realtor where id = @realtorId;";
+            string query3 = "Select * from address where RealEstateId = @realEstateId;";
+            
+            string checkQuery1 = "Select * from apartment where RealEstateId = @id";
+            string checkQuery2 = "Select * from house where RealEstateId = @id";
+            string checkQuery3 = "Select * from land where RealEstateId = @id";
+
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = query;
+            cmd.Parameters.AddWithValue("@supplyId", id);
+
+            var reader = cmd.ExecuteReader();
+
+            Supply supply = new Supply();
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    supply = new Supply()
+                    {
+                        Id = reader.GetInt32(0),
+                        Cost = reader.GetInt32(1),
+                        Client = new Client()
+                        {
+                            Id = reader.GetInt32(2)
+                        },
+                        Realtor = new Realtor()
+                        {
+                            Id = reader.GetInt32(3)
+                        },
+                        RealEstate = new RealEstate()
+                        {
+                            Id = reader.GetInt32(4),
+                            Type = ""
+                        }
+                    };
+                    Supplies.Add(supply);
+                }
+            }
+            reader.Close();
+
+            MySqlCommand checkComand = new MySqlCommand();
+                checkComand.Connection = connection;
+                checkComand.CommandText = query1;
+                
+                checkComand.Parameters.AddWithValue("@clientId", supply.Client.Id); 
+                checkComand.Parameters.AddWithValue("@realtorId", supply.Realtor.Id); 
+                checkComand.Parameters.AddWithValue("@realEstateId", supply.RealEstate.Id); 
+                
+                var readerInside = checkComand.ExecuteReader(); 
+                if (readerInside.HasRows) 
+                { 
+                    while (readerInside.Read())
+                    {
+                        supply.Client.FirstName = readerInside.IsDBNull(1) ? "Нет" : readerInside.GetString(1);
+                        supply.Client.SecondName = readerInside.IsDBNull(2) ? "Нет" : readerInside.GetString(2);
+                        supply.Client.LastName = readerInside.IsDBNull(3) ? "Нет" :readerInside.GetString(3);
+                        supply.Client.Phone = readerInside.IsDBNull(4) ? "Нет" :readerInside.GetString(4);
+                        supply.Client.Email = readerInside.IsDBNull(5) ? "Нет" : reader.GetString(5);
+                    }
+                } 
+                readerInside.Close();
+                
+                checkComand.CommandText = query2; 
+                readerInside = checkComand.ExecuteReader(); 
+                if (readerInside.HasRows) 
+                { 
+                    while (readerInside.Read()) 
+                    { 
+                        supply.Realtor.FirstName = readerInside.IsDBNull(1) ? "Нет" : readerInside.GetString(1);
+                        supply.Realtor.SecondName = readerInside.IsDBNull(2) ? "Нет" : readerInside.GetString(2);
+                        supply.Realtor.LastName = readerInside.IsDBNull(3) ? "Нет" :readerInside.GetString(3);
+                        supply.Realtor.Share = readerInside.IsDBNull(4) ? 0 :readerInside.GetInt32(4);
+                    }
+                }
+                readerInside.Close();
+                
+                checkComand.CommandText = query3; 
+                readerInside = checkComand.ExecuteReader(); 
+                if (readerInside.HasRows) 
+                {
+                    while (readerInside.Read())
+                    {
+                        supply.RealEstate.Address = new Address();
+                        supply.RealEstate.Address.City = readerInside.IsDBNull(1) ? "Нет" : readerInside.GetString(1);
+                        supply.RealEstate.Address.Street = readerInside.IsDBNull(2) ? "Нет" : readerInside.GetString(2);
+                        supply.RealEstate.Address.House = readerInside.IsDBNull(3) ? "Нет" : readerInside.GetString(3);
+                        supply.RealEstate.Address.Apartment = readerInside.IsDBNull(4) ? 0 : readerInside.GetInt32(4);
+                    }
+                } 
+                readerInside.Close();
+                
+                
+                checkComand.Parameters.AddWithValue("@id", supply.RealEstate.Id); 
+                
+                checkComand.CommandText = checkQuery1;
+                readerInside = checkComand.ExecuteReader(); 
+                if (readerInside.HasRows)
+                {
+                    supply.RealEstate.Type = "Квартира";
+                } 
+                readerInside.Close();
+                
+                checkComand.CommandText = checkQuery2; 
+                readerInside = checkComand.ExecuteReader(); 
+                if (readerInside.HasRows) 
+                {
+                    supply.RealEstate.Type = "Дом";
+                }
+                readerInside.Close();
+                
+                checkComand.CommandText = checkQuery3; 
+                readerInside = checkComand.ExecuteReader(); 
+                if (readerInside.HasRows) 
+                { 
+                    supply.RealEstate.Type = "Земля";
+                } 
+                readerInside.Close();
+                return supply;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return null;
+        }
+        finally
+        {
+            connection.Dispose();
+            connection.Close();
+            OnPropertyChanged(nameof(Supplies));
+        }
+    }
+
+    private bool IsTwoSuppliesEven(Supply supply1, Supply supply2)
+    {
+        if (supply1.Id != supply2.Id || supply1.Cost != supply2.Cost ||
+            supply1.Client.Id != supply2.Client.Id ||
+            supply1.Realtor.Id != supply2.Realtor.Id ||
+            supply1.RealEstate.Id != supply2.RealEstate.Id)
+            return false;
+        return true;
     }
 }

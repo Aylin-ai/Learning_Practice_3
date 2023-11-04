@@ -231,6 +231,7 @@ public class ClientsViewModel : ViewModelBase
             cmd.Parameters.AddWithValue("@email", SelectedClient.Email);
 
             cmd.ExecuteNonQuery();
+            IsEditionSaved = true;
         }
         catch (Exception ex)
         {

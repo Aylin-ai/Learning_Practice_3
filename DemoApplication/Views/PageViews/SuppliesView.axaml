@@ -51,23 +51,23 @@
                 
                     <Button Content="Сохранить"
                             HorizontalAlignment="Center"
-                            Command="{Binding }"/>
+                            Command="{Binding SaveSupplyCommand}"/>
                     <Button Grid.Column="1" Content="Удалить"
                             HorizontalAlignment="Center"
-                            Command="{Binding }"/>
+                            Command="{Binding DeleteSupplyCommand}"/>
                     <Button Grid.Column="2" Content="Отмена"
                             HorizontalAlignment="Center"
-                            Command="{Binding }"/>
+                            Command="{Binding CancelSupplyEditionCommand}"/>
                 </Grid>
                 
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="0.9*"/>
-                        <RowDefinition Height="0.9*"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
+                <StackPanel Orientation="Vertical">
                     
-                    <StackPanel Grid.Row="0" Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Цена -"/>
+                        <TextBox Text="{Binding SelectedSupply.Cost, Mode=TwoWay}"/>
+                    </StackPanel>
+                    
+                    <StackPanel Orientation="Vertical">
                         
                         <Label Content="Клиент"/>
                         
@@ -103,7 +103,7 @@
                         
                     </StackPanel>
                     
-                    <StackPanel Grid.Row="1" Orientation="Vertical">
+                    <StackPanel Orientation="Vertical">
                         
                         <Label Content="Риелтор"/>
                         
@@ -135,7 +135,7 @@
                         
                     </StackPanel>
                     
-                    <StackPanel Grid.Row="2" Orientation="Vertical">
+                    <StackPanel Orientation="Vertical">
                         
                         <Label Content="Объект недвижимости"/>
                         
@@ -183,7 +183,7 @@
                         
                     </StackPanel>
                     
-                </Grid>
+                </StackPanel>
                 
             </DockPanel>
             
