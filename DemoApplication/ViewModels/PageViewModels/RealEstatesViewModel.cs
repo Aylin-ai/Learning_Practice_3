@@ -25,6 +25,8 @@ public class RealEstatesViewModel : ViewModelBase
 
         #endregion
     }
+
+    #region Коллекции
     
     private ObservableCollection<RealEstate> _realEstates = new ObservableCollection<RealEstate>();
     public ObservableCollection<RealEstate> RealEstates
@@ -32,19 +34,54 @@ public class RealEstatesViewModel : ViewModelBase
         get => _realEstates;
         set => this.RaiseAndSetIfChanged(ref _realEstates, value);
     }
-
-    private bool _isEditionSaved = true;
-    public bool IsEditionSaved
+    
+    private ObservableCollection<string> _comboBoxCollection = new ObservableCollection<string>()
     {
-        get => _isEditionSaved;
-        set => this.RaiseAndSetIfChanged(ref _isEditionSaved, value);
+        "Нет", "Предложения", "Информация"
+    };
+    public ObservableCollection<string> ComboBoxCollection
+    {
+        get => _comboBoxCollection;
+        set => this.RaiseAndSetIfChanged(ref _comboBoxCollection, value);
     }
 
-    private bool _isCancellingHappening;
-    public bool IsCancellingHappening
+    private ObservableCollection<string> _comboBoxCollectionOfRealEstateTypes = new ObservableCollection<string>()
     {
-        get => _isCancellingHappening;
-        set => this.RaiseAndSetIfChanged(ref _isCancellingHappening, value);
+        "Квартира", "Дом", "Земля"
+    };
+    public ObservableCollection<string> ComboBoxCollectionOfRealEstateTypes
+    {
+        get => _comboBoxCollectionOfRealEstateTypes;
+        set => this.RaiseAndSetIfChanged(ref _comboBoxCollectionOfRealEstateTypes, value);
+    }
+
+    #endregion
+
+    #region Выбираемые переменные
+    
+    private string _selectedComboBoxItem = "Нет";
+    public string SelectedComboBoxItem
+    {
+        get => _selectedComboBoxItem;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _selectedComboBoxItem, value);
+            if (value == "Нет")
+            {
+                IsRealEstateSupplyInformationSelected = false;
+                IsRealEstateInformationSelected = false;
+            }
+            else if (value == "Информация")
+            {
+                IsRealEstateInformationSelected = true;
+                IsRealEstateSupplyInformationSelected = false;
+            }
+            else if (value == "Предложения")
+            {
+                IsRealEstateInformationSelected = false;
+                IsRealEstateSupplyInformationSelected = true;
+            }
+        }
     }
 
     private RealEstate _oldSelectedRealEstate = new RealEstate();
@@ -62,11 +99,19 @@ public class RealEstatesViewModel : ViewModelBase
         get => _selectedEstate;
         set
         {
+            if (value == null)
+            {
+                this.RaiseAndSetIfChanged(ref _selectedEstate, value);
+                return;
+            }
             if (countOfSelections == 1)
             {
                 this.RaiseAndSetIfChanged(ref _selectedEstate, value);
                 countOfSelections++;
                 OldSelectedRealEstate = GetSpecificRealEstate(SelectedEstate.Id);
+                IsRealEstateSelected = true;
+                SelectedComboBoxRealEstateType = value.Type;
+                SelectedRealEstateSupply = GetSpecificSupply(value.Id);
                 return;
             }
             if (IsCancellingHappening)
@@ -86,10 +131,82 @@ public class RealEstatesViewModel : ViewModelBase
             else
             {
                 this.RaiseAndSetIfChanged(ref _selectedEstate, value);
+                SelectedComboBoxRealEstateType = value.Type;
+                SelectedRealEstateSupply = GetSpecificSupply(value.Id);
             }
         }
     }
+    
+    private string _selectedComboBoxRealEstateType;
+    public string SelectedComboBoxRealEstateType
+    {
+        get => _selectedComboBoxRealEstateType;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _selectedComboBoxRealEstateType, value);
+            SelectedEstate.Type = value;
+            if (value == "Земля")
+                IsLandChosen = true;
+            else
+                IsLandChosen = false;
+        }
+    }
 
+    private ObservableCollection<Supply> _selectedRealEstateSupply = new ObservableCollection<Supply>();
+    public ObservableCollection<Supply> SelectedRealEstateSupply
+    {
+        get => _selectedRealEstateSupply;
+        set => this.RaiseAndSetIfChanged(ref _selectedRealEstateSupply, value);
+    }
+
+    #endregion
+
+    #region Контроль видимости
+
+    private bool _isEditionSaved = true;
+    public bool IsEditionSaved
+    {
+        get => _isEditionSaved;
+        set => this.RaiseAndSetIfChanged(ref _isEditionSaved, value);
+    }
+
+    private bool _isCancellingHappening;
+    public bool IsCancellingHappening
+    {
+        get => _isCancellingHappening;
+        set => this.RaiseAndSetIfChanged(ref _isCancellingHappening, value);
+    }
+    
+    private bool _isLandChosen;
+    public bool IsLandChosen
+    {
+        get => _isLandChosen;
+        set => this.RaiseAndSetIfChanged(ref _isLandChosen, value);
+    }
+
+    private bool _isRealEstateSelected = false;
+    public bool IsRealEstateSelected
+    {
+        get => _isRealEstateSelected;
+        set => this.RaiseAndSetIfChanged(ref _isRealEstateSelected, value);
+    }
+
+    private bool _isRealEstateSupplyInformationSelected = false;
+    public bool IsRealEstateSupplyInformationSelected
+    {
+        get => _isRealEstateSupplyInformationSelected;
+        set => this.RaiseAndSetIfChanged(ref _isRealEstateSupplyInformationSelected, value);
+    }
+    
+    private bool _isRealEstateInformationSelected = false;
+    public bool IsRealEstateInformationSelected
+    {
+        get => _isRealEstateInformationSelected;
+        set => this.RaiseAndSetIfChanged(ref _isRealEstateInformationSelected, value);
+    }
+
+    #endregion
+    
     #region Команды
 
     #region Команды изменения бд
@@ -106,7 +223,7 @@ public class RealEstatesViewModel : ViewModelBase
             SelectedEstate.Coordinates.Longitude < -180)
         {
             Console.WriteLine("Широта или долгота приняли некорректное значение");
-            OnCancelRealEstateEditionCommandExecuted();
+            return;
         }
         
         MySqlConnection connection = DBUtils.GetDBConnection();
@@ -114,6 +231,58 @@ public class RealEstatesViewModel : ViewModelBase
         try
         {
             connection.Open();
+            
+            if (OldSelectedRealEstate.Type != SelectedEstate.Type)
+            {
+                MySqlCommand typeCommand = new MySqlCommand();
+                typeCommand.Connection = connection;
+                
+                string typeQuery = "", typeQuery1 = "";
+                if (OldSelectedRealEstate.Type == "Квартира")
+                {
+                    typeQuery = "delete from apartment " +
+                                "where RealEstateId = @id";
+                }
+                else if (OldSelectedRealEstate.Type == "Дом")
+                {
+                    typeQuery = "delete from house " +
+                                "where RealEstateId = @id";
+                }
+                else if (OldSelectedRealEstate.Type == "Земля")
+                {
+                    typeQuery = "delete from land " +
+                                "where RealEstateId = @id";
+                }
+
+                if (SelectedEstate.Type == "Квартира")
+                {
+                    typeQuery1 = "insert into apartment values" +
+                                 "(@id, @floor, @rooms, @totalArea);";
+                }
+                else if (SelectedEstate.Type == "Дом")
+                {
+                    typeQuery1 = "insert into house values" +
+                                 "(@id, @floor, @rooms, @totalArea);";
+                }
+                else if (SelectedEstate.Type == "Земля")
+                {
+                    typeQuery1 = "insert into land values" +
+                                 "(@id, @totalArea);";
+                }
+
+                typeCommand.Parameters.AddWithValue("@id", SelectedEstate.Id);
+                typeCommand.Parameters.AddWithValue("@floor", SelectedEstate.MoreInformation.Floor);
+                typeCommand.Parameters.AddWithValue("@rooms", SelectedEstate.MoreInformation.Rooms);
+                typeCommand.Parameters.AddWithValue("@totalArea", SelectedEstate.MoreInformation.TotalArea);
+
+                typeCommand.CommandText = typeQuery;
+                typeCommand.ExecuteNonQuery();
+
+                typeCommand.CommandText = typeQuery1;
+                typeCommand.ExecuteNonQuery();
+
+            }
+            
             string query1 = "update address set " +
                             "City = @newCity, " +
                             "Street = @newStreet, " +
@@ -168,6 +337,8 @@ public class RealEstatesViewModel : ViewModelBase
 
             cmd.CommandText = query3;
             cmd.ExecuteNonQuery();
+            
+            OldSelectedRealEstate = GetSpecificRealEstate(SelectedEstate.Id);
         }
         catch (Exception ex)
         {
@@ -210,6 +381,11 @@ public class RealEstatesViewModel : ViewModelBase
 
             cmd.CommandText = query2;
             cmd.ExecuteNonQuery();
+            
+            SelectedEstate = null;
+            IsRealEstateSelected = false;
+            SelectedComboBoxItem = "Нет";
+            GetAllRealEstates();
         }
         catch (Exception ex)
         {
@@ -226,6 +402,8 @@ public class RealEstatesViewModel : ViewModelBase
         IsCancellingHappening = true;
         SelectedEstate = OldSelectedRealEstate;
         IsEditionSaved = true;
+        IsRealEstateSelected = false;
+        SelectedComboBoxItem = "Нет";
         GetAllRealEstates();
         countOfSelections = 1;
     }
@@ -487,6 +665,154 @@ public class RealEstatesViewModel : ViewModelBase
         }
     }
 
+    private ObservableCollection<Supply> GetSpecificSupply(int id)
+    {
+        MySqlConnection connection = DBUtils.GetDBConnection();
+
+        ObservableCollection<Supply> supplies = new ObservableCollection<Supply>();
+
+        try
+        {
+            connection.Open();
+            string query = "SELECT * from supply where supply.RealEstateId = @realEstateId;";
+
+            string query1 = "Select * from client where id = @clientId;";
+            string query2 = "Select * from realtor where id = @realtorId;";
+            string query3 = "Select * from address where RealEstateId = @realEstateId;";
+            
+            string checkQuery1 = "Select * from apartment where RealEstateId = @id";
+            string checkQuery2 = "Select * from house where RealEstateId = @id";
+            string checkQuery3 = "Select * from land where RealEstateId = @id";
+
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = query;
+            cmd.Parameters.AddWithValue("@realEstateId", id);
+
+            var reader = cmd.ExecuteReader();
+            
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    var supply = new Supply()
+                    {
+                        Id = reader.GetInt32(0),
+                        Cost = reader.GetInt32(1),
+                        Client = new Client()
+                        {
+                            Id = reader.GetInt32(2)
+                        },
+                        Realtor = new Realtor()
+                        {
+                            Id = reader.GetInt32(3)
+                        },
+                        RealEstate = new RealEstate()
+                        {
+                            Id = reader.GetInt32(4),
+                            Type = ""
+                        }
+                    };
+                    supplies.Add(supply);
+                }
+            }
+            reader.Close();
+
+            foreach (var supply in supplies)
+            {
+                MySqlCommand checkComand = new MySqlCommand();
+                checkComand.Connection = connection;
+                checkComand.CommandText = query1;
+                
+                checkComand.Parameters.AddWithValue("@clientId", supply.Client.Id); 
+                checkComand.Parameters.AddWithValue("@realtorId", supply.Realtor.Id); 
+                checkComand.Parameters.AddWithValue("@realEstateId", supply.RealEstate.Id); 
+                
+                var readerInside = checkComand.ExecuteReader(); 
+                if (readerInside.HasRows) 
+                { 
+                    while (readerInside.Read())
+                    {
+                        supply.Client.FirstName = readerInside.IsDBNull(1) ? "Нет" : readerInside.GetString(1);
+                        supply.Client.SecondName = readerInside.IsDBNull(2) ? "Нет" : readerInside.GetString(2);
+                        supply.Client.LastName = readerInside.IsDBNull(3) ? "Нет" :readerInside.GetString(3);
+                        supply.Client.Phone = readerInside.IsDBNull(4) ? "Нет" :readerInside.GetString(4);
+                        supply.Client.Email = readerInside.IsDBNull(5) ? "Нет" : reader.GetString(5);
+                    }
+                } 
+                readerInside.Close();
+                
+                checkComand.CommandText = query2; 
+                readerInside = checkComand.ExecuteReader(); 
+                if (readerInside.HasRows) 
+                { 
+                    while (readerInside.Read()) 
+                    { 
+                        supply.Realtor.FirstName = readerInside.IsDBNull(1) ? "Нет" : readerInside.GetString(1);
+                        supply.Realtor.SecondName = readerInside.IsDBNull(2) ? "Нет" : readerInside.GetString(2);
+                        supply.Realtor.LastName = readerInside.IsDBNull(3) ? "Нет" :readerInside.GetString(3);
+                        supply.Realtor.Share = readerInside.IsDBNull(4) ? 0 :readerInside.GetInt32(4);
+                    }
+                }
+                readerInside.Close();
+                
+                checkComand.CommandText = query3; 
+                readerInside = checkComand.ExecuteReader(); 
+                if (readerInside.HasRows) 
+                {
+                    while (readerInside.Read())
+                    {
+                        supply.RealEstate.Address = new Address();
+                        supply.RealEstate.Address.City = readerInside.IsDBNull(1) ? "Нет" : readerInside.GetString(1);
+                        supply.RealEstate.Address.Street = readerInside.IsDBNull(2) ? "Нет" : readerInside.GetString(2);
+                        supply.RealEstate.Address.House = readerInside.IsDBNull(3) ? "Нет" : readerInside.GetString(3);
+                        supply.RealEstate.Address.Apartment = readerInside.IsDBNull(4) ? 0 : readerInside.GetInt32(4);
+                    }
+                } 
+                readerInside.Close();
+                
+                
+                checkComand.Parameters.AddWithValue("@id", supply.RealEstate.Id); 
+                
+                checkComand.CommandText = checkQuery1;
+                readerInside = checkComand.ExecuteReader(); 
+                if (readerInside.HasRows)
+                {
+                    supply.RealEstate.Type = "Квартира";
+                } 
+                readerInside.Close();
+                
+                checkComand.CommandText = checkQuery2; 
+                readerInside = checkComand.ExecuteReader(); 
+                if (readerInside.HasRows) 
+                {
+                    supply.RealEstate.Type = "Дом";
+                }
+                readerInside.Close();
+                
+                checkComand.CommandText = checkQuery3; 
+                readerInside = checkComand.ExecuteReader(); 
+                if (readerInside.HasRows) 
+                { 
+                    supply.RealEstate.Type = "Земля";
+                } 
+                readerInside.Close();
+            }
+
+            return supplies;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return null;
+        }
+        finally
+        {
+            connection.Dispose();
+            connection.Close();
+        }
+    }
+    
     private bool IsTwoRealEstatesEven(RealEstate realEstate1, RealEstate realEstate2)
     {
         if (realEstate1.Address.City != realEstate2.Address.City ||

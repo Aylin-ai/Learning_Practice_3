@@ -30,9 +30,29 @@
             </ListBox>
         </DockPanel>
         
-        <DockPanel Grid.Column="1">
+        <DockPanel Grid.Column="1"
+                   IsEnabled="{Binding IsRealEstateSelected}">
             
-            <Grid DockPanel.Dock="Bottom"
+            <ComboBox HorizontalAlignment="Center"
+                      VerticalAlignment="Top"
+                      DockPanel.Dock="Top"
+                      ItemsSource="{Binding ComboBoxCollection}"
+                      SelectedItem="{Binding SelectedComboBoxItem}"/>
+            
+            <ListBox ItemsSource="{Binding SelectedRealEstateSupply}"
+                     IsVisible="{Binding IsRealEstateSupplyInformationSelected}"
+                     DockPanel.Dock="Top" HorizontalAlignment="Center">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="models:Supply">
+                        <controls:SupplyControl Supply="{Binding}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            
+            <DockPanel Dock="Top"
+                       IsVisible="{Binding IsRealEstateInformationSelected}"
+                       HorizontalAlignment="Center">
+                <Grid DockPanel.Dock="Bottom"
                   Margin="5"
                   HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
@@ -50,55 +70,75 @@
                 <Button Grid.Column="2" Content="Отмена"
                         HorizontalAlignment="Center"
                         Command="{Binding CancelRealEstateEditionCommand}"/>
-            </Grid>
+                </Grid>
             
-            <StackPanel Orientation="Vertical">
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Id -"></Label>
-                    <Label Content="{Binding SelectedEstate.Id}"/>
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Id -"></Label>
+                        <Label Content="{Binding SelectedEstate.Id}"/>
+                    </StackPanel>
+                    <Label Content="Адрес"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="г."/>
+                        <TextBox Text="{Binding SelectedEstate.Address.City, 
+                        Mode=TwoWay}"/>
+                        <Label Content="ул."/>
+                        <TextBox Text="{Binding SelectedEstate.Address.Street,
+                        Mode=TwoWay}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="д."/>
+                        <TextBox Text="{Binding SelectedEstate.Address.House,
+                        Mode=TwoWay}"/>
+                        <Label Content="кв."/>
+                        <TextBox Text="{Binding SelectedEstate.Address.Apartment,
+                        Mode=TwoWay}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Широта (от -90 до 90) - "/>
+                        <TextBox Text="{Binding SelectedEstate.Coordinates.Latitude,
+                        Mode=TwoWay}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="; Долгота (от -180 до 180) -"/>
+                        <TextBox Text="{Binding SelectedEstate.Coordinates.Longitude,
+                        Mode=TwoWay}"/>
+                    </StackPanel>
+                    
+                    <ComboBox ItemsSource="{Binding ComboBoxCollectionOfRealEstateTypes}"
+                              SelectedItem="{Binding SelectedComboBoxRealEstateType}"/>
+                    
+                    <StackPanel Orientation="Vertical"
+                                IsVisible="{Binding !IsLandChosen}">
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Этаж - "/>
+                            <TextBox Text="{Binding SelectedEstate.MoreInformation.Floor,
+                        Mode=TwoWay}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Количество комнат - "/>
+                            <TextBox Text="{Binding SelectedEstate.MoreInformation.Rooms,
+                        Mode=TwoWay}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Площадь - "/>
+                            <TextBox Text="{Binding SelectedEstate.MoreInformation.TotalArea,
+                        Mode=TwoWay}"/>
+                        </StackPanel>
+                    </StackPanel>
+                
+                    <StackPanel Orientation="Vertical"
+                                IsVisible="{Binding IsLandChosen}">
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Площадь - "/>
+                            <TextBox Text="{Binding SelectedEstate.MoreInformation.TotalArea,
+                        Mode=TwoWay}"/>
+                        </StackPanel>
+                    </StackPanel>
+                    
                 </StackPanel>
-                <Label Content="Адрес"/>
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="г."/>
-                    <TextBox Text="{Binding SelectedEstate.Address.City, 
-                    Mode=TwoWay}"/>
-                    <Label Content="ул."/>
-                    <TextBox Text="{Binding SelectedEstate.Address.Street,
-                    Mode=TwoWay}"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="д."/>
-                    <TextBox Text="{Binding SelectedEstate.Address.House,
-                    Mode=TwoWay}"/>
-                    <Label Content="кв."/>
-                    <TextBox Text="{Binding SelectedEstate.Address.Apartment,
-                    Mode=TwoWay}"/>
-                </StackPanel>
-                <Label Content="Координаты - "/>
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Широта (от -90 до 90) - "/>
-                    <TextBox Text="{Binding SelectedEstate.Coordinates.Latitude,
-                    Mode=TwoWay}"/>
-                    <Label Content="; Долгота (от -180 до 180) -"/>
-                    <TextBox Text="{Binding SelectedEstate.Coordinates.Longitude,
-                    Mode=TwoWay}"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Этаж - "/>
-                    <TextBox Text="{Binding SelectedEstate.MoreInformation.Floor,
-                    Mode=TwoWay}"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Количество комнат - "/>
-                    <TextBox Text="{Binding SelectedEstate.MoreInformation.Rooms,
-                    Mode=TwoWay}"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Площадь - "/>
-                    <TextBox Text="{Binding SelectedEstate.MoreInformation.TotalArea,
-                    Mode=TwoWay}"/>
-                </StackPanel>
-            </StackPanel>
+            </DockPanel>
+            
         </DockPanel>
         
     </Grid>

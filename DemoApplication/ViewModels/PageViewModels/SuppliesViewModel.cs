@@ -894,7 +894,6 @@ public class SuppliesViewModel : ViewModelBase
                             Type = ""
                         }
                     };
-                    Supplies.Add(supply);
                 }
             }
             reader.Close();

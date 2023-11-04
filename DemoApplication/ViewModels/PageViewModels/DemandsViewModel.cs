@@ -246,7 +246,6 @@ public class DemandsViewModel : ViewModelBase
     }
 
     private string _selectedComboBoxRealEstateType;
-
     public string SelectedComboBoxRealEstateType
     {
         get => _selectedComboBoxRealEstateType;
