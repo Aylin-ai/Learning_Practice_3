@@ -89,6 +89,13 @@ public class SuppliesViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _comboBoxCollection, value);
     }
 
+    private ObservableCollection<Deal> _relatedDeals = new ObservableCollection<Deal>();
+    public ObservableCollection<Deal> RelatedDeals
+    {
+        get => _relatedDeals;
+        set => this.RaiseAndSetIfChanged(ref _relatedDeals, value);
+    }
+
     #endregion
 
     #region Выбираемые переменные
@@ -203,6 +210,9 @@ public class SuppliesViewModel : ViewModelBase
                 FreeRealEstates.Add(value.RealEstate);
                 ComboBoxCollectionOfFreeRealEstates.Add($"{value.RealEstate.Id} {value.RealEstate.Type}");
                 SelectedComboBoxRealEstate = $"{value.RealEstate.Id} {value.RealEstate.Type}";
+
+                RelatedDeals = GetRelatedDeals(value.Id);
+                
                 return;
             }
             if (IsCancellingHappening)
@@ -237,6 +247,7 @@ public class SuppliesViewModel : ViewModelBase
                 FreeRealEstates.Add(value.RealEstate);
                 ComboBoxCollectionOfFreeRealEstates.Add($"{value.RealEstate.Id} {value.RealEstate.Type}");
                 SelectedComboBoxRealEstate = $"{value.RealEstate.Id} {value.RealEstate.Type}";
+                RelatedDeals = GetRelatedDeals(value.Id);
             }
         }
     }
@@ -251,10 +262,17 @@ public class SuppliesViewModel : ViewModelBase
             if (value == "Нет")
             {
                 IsUserEditingVisible = false;
+                IsRelatedDealsVisible = false;
             }
             else if (value == "Информация")
             {
                 IsUserEditingVisible = true;
+                IsRelatedDealsVisible = false;
+            }
+            else if (value == "Сделки")
+            {
+                IsUserEditingVisible = false;
+                IsRelatedDealsVisible = true;
             }
         }
     }
@@ -289,6 +307,13 @@ public class SuppliesViewModel : ViewModelBase
     {
         get => _isCancellingHappening;
         set => this.RaiseAndSetIfChanged(ref _isCancellingHappening, value);
+    }
+
+    private bool _isRelatedDealsVisible = false;
+    public bool IsRelatedDealsVisible
+    {
+        get => _isRelatedDealsVisible;
+        set => this.RaiseAndSetIfChanged(ref _isRelatedDealsVisible, value);
     }
 
     #endregion
@@ -951,6 +976,134 @@ public class SuppliesViewModel : ViewModelBase
                 } 
                 readerInside.Close();
                 return supply;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return null;
+        }
+        finally
+        {
+            connection.Dispose();
+            connection.Close();
+            OnPropertyChanged(nameof(Supplies));
+        }
+    }
+
+    private ObservableCollection<Deal> GetRelatedDeals(int id)
+    {
+        ObservableCollection<Deal> deals = new ObservableCollection<Deal>();
+        MySqlConnection connection = DBUtils.GetDBConnection();
+
+        try
+        {
+            connection.Open();
+            string query = "SELECT * from deal where deal.SupplyId = @supplyId;";
+            string query1 = "Select * from demand where id = @demandId;";
+            string query2 = "Select * from client where id = @clientId;";
+            string query3 = "Select * from realtor where id = @realtorId;";
+
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = query;
+            cmd.Parameters.AddWithValue("@supplyId", id);
+
+            var reader = cmd.ExecuteReader();
+            
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    Deal deal = new Deal()
+                    {
+                        Id = reader.IsDBNull(0) ? 0 : reader.GetInt32(0),
+                        Demand = new Demand()
+                        {
+                            Id = reader.IsDBNull(1) ? 0 : reader.GetInt32(1)
+                        },
+                        Supply = SelectedSupply
+                    };
+                    deals.Add(deal);
+                }
+            }
+            reader.Close();
+
+            foreach (var deal in deals)
+            {
+                MySqlCommand checkComand = new MySqlCommand();
+                checkComand.Connection = connection;
+                checkComand.CommandText = query1;
+                checkComand.Parameters.AddWithValue("@demandId", deal.Demand.Id); 
+                var readerInside = checkComand.ExecuteReader(); 
+                
+                if (readerInside.HasRows) 
+                { 
+                    while (readerInside.Read())
+                    {
+                        if (readerInside.GetInt32(1) == 1)
+                            deal.Demand.RealEstateType = "Квартира";
+                        else if (readerInside.GetInt32(1) == 2)
+                            deal.Demand.RealEstateType = "Квартира";
+                        else if (readerInside.GetInt32(1) == 2)
+                            deal.Demand.RealEstateType = "Квартира";
+                        deal.Demand.MinCost = readerInside.IsDBNull(2) ? 0 : readerInside.GetInt32(2);
+                        deal.Demand.MaxCost = readerInside.IsDBNull(3) ? 0 : readerInside.GetInt32(3);
+                        
+                        string address = readerInside.IsDBNull(3) ? ",,," : readerInside.GetString(4);
+                        deal.Demand.Address = new Address()
+                        {
+                            City = address.Split(',')[0],
+                            Street = address.Split(',')[1],
+                            House = address.Split(',')[2],
+                            Apartment = address.Split(',')[3] == "" ? 0 : int.Parse(address.Split(',')[3])
+                        };
+
+                        deal.Demand.Client = new Client()
+                        {
+                            Id = readerInside.IsDBNull(5) ? 0 : readerInside.GetInt32(5)
+                        };
+                        deal.Demand.Realtor = new Realtor()
+                        {
+                            Id = readerInside.IsDBNull(6) ? 0 : readerInside.GetInt32(6)
+                        };
+                    }
+                } 
+                readerInside.Close();
+                
+                checkComand.Parameters.AddWithValue("@clientId", deal.Demand.Client.Id); 
+                checkComand.Parameters.AddWithValue("@realtorId", deal.Demand.Realtor.Id);
+
+                checkComand.CommandText = query2;
+                readerInside = checkComand.ExecuteReader();
+                if (readerInside.HasRows)
+                {
+                    while (readerInside.Read())
+                    {
+                        deal.Demand.Client.FirstName = readerInside.IsDBNull(1) ? "Нет" : readerInside.GetString(1);
+                        deal.Demand.Client.SecondName = readerInside.IsDBNull(2) ? "Нет" : readerInside.GetString(2);
+                        deal.Demand.Client.LastName = readerInside.IsDBNull(3) ? "Нет" : readerInside.GetString(3);
+                        deal.Demand.Client.Phone = readerInside.IsDBNull(4) ? "Нет" : readerInside.GetString(4);
+                        deal.Demand.Client.Email = readerInside.IsDBNull(5) ? "Нет" : readerInside.GetString(5);
+                    }
+                }
+                readerInside.Close();
+                
+                checkComand.CommandText = query3;
+                readerInside = checkComand.ExecuteReader();
+                if (readerInside.HasRows)
+                {
+                    while (readerInside.Read())
+                    {
+                        deal.Demand.Realtor.FirstName = readerInside.IsDBNull(1) ? "Нет" : readerInside.GetString(1);
+                        deal.Demand.Realtor.SecondName = readerInside.IsDBNull(2) ? "Нет" : readerInside.GetString(2);
+                        deal.Demand.Realtor.LastName = readerInside.IsDBNull(3) ? "Нет" : readerInside.GetString(3);
+                        deal.Demand.Realtor.Share = readerInside.IsDBNull(4) ? 0 : readerInside.GetInt32(4);
+                    }
+                }
+                readerInside.Close();
+            }
+
+            return deals;
         }
         catch (Exception ex)
         {

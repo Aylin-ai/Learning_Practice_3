@@ -48,6 +48,14 @@ public class ViewLocator : IDataTemplate
                 Content = data
             };
         }
+        else if (dataType == typeof(Deal))
+        {
+            return new ContentControl
+            {
+                ContentTemplate = (IDataTemplate)Application.Current.Resources["DealTemplate"],
+                Content = data
+            };
+        }
         if (type != null)
         {
             return (Control)Activator.CreateInstance(type)!;

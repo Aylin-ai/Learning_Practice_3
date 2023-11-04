@@ -5,7 +5,7 @@
              xmlns:pageViewModels="clr-namespace:DemoApplication.ViewModels.PageViewModels"
              xmlns:models="clr-namespace:DemoApplication.Models"
              xmlns:controls="clr-namespace:DemoApplication.Controls"
-             mc:Ignorable="d" d:DesignWidth="100" d:DesignHeight="100"
+             mc:Ignorable="d"
              x:Class="DemoApplication.Views.PageViews.SuppliesView"
              x:CompileBindings="False">
     
@@ -37,6 +37,19 @@
                       DockPanel.Dock="Top"
                       ItemsSource="{Binding ComboBoxCollection}"
                       SelectedItem="{Binding SelectedComboBoxItem}"/>
+            
+            <DockPanel LastChildFill="True" DockPanel.Dock="Top"
+                       IsVisible="{Binding IsRelatedDealsVisible}"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Top">
+                <ListBox ItemsSource="{Binding RelatedDeals}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="models:Deal">
+                            <controls:DealControl Deal="{Binding}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
             
             <DockPanel LastChildFill="True"
                        IsVisible="{Binding IsUserEditingVisible}">

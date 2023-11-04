@@ -22,50 +22,7 @@
             <ListBox ItemsSource="{Binding Deals}">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="models:Deal">
-                        <StackPanel Orientation="Vertical">
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Клиент-покупатель -"></Label>
-                                <Label Content="{Binding Demand.Client.FirstName}"/>
-                                <Label Content="{Binding Demand.Client.SecondName}"/>
-                                <Label Content="{Binding Demand.Client.LastName}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Риелтор покупателя -"></Label>
-                                <Label Content="{Binding Demand.Realtor.FirstName}"/>
-                                <Label Content="{Binding Demand.Realtor.SecondName}"/>
-                                <Label Content="{Binding Demand.Realtor.LastName}"/>
-                                <Label Content="{Binding Demand.Realtor.Share}"/>
-                                <Label Content="%"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Клиент-продавец -"></Label>
-                                <Label Content="{Binding Supply.Client.FirstName}"/>
-                                <Label Content="{Binding Supply.Client.SecondName}"/>
-                                <Label Content="{Binding Supply.Client.LastName}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Риелтор продавца -"></Label>
-                                <Label Content="{Binding Supply.Realtor.FirstName}"/>
-                                <Label Content="{Binding Supply.Realtor.SecondName}"/>
-                                <Label Content="{Binding Supply.Realtor.LastName}"/>
-                                <Label Content="{Binding Supply.Realtor.Share}"/>
-                                <Label Content="%"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Объект недвижимости -"/>
-                                <Label Content="{Binding Supply.RealEstate.Type}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Цена -"/>
-                                <Label Content="{Binding Supply.Cost}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="{Binding Supply.RealEstate.Address.City}"/>
-                                <Label Content="{Binding Supply.RealEstate.Address.Street}"/>
-                                <Label Content="{Binding Supply.RealEstate.Address.House}"/>
-                                <Label Content="{Binding Supply.RealEstate.Address.Apartment}"/>
-                            </StackPanel>
-                        </StackPanel>
+                        
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
