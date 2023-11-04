@@ -332,6 +332,7 @@ public class SuppliesViewModel : ViewModelBase
         {
             Console.WriteLine("Вы не выбрали цену");
             OnCancelSupplyEditionCommandExecuted();
+            return;
         }
         
         MySqlConnection connection = DBUtils.GetDBConnection();
