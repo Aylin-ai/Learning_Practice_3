@@ -32,6 +32,10 @@
                  <DataTemplate x:Key="DealTemplate" DataType="{x:Type model:Deal}">
                      <controls:DealControl/>
                  </DataTemplate>
+                 
+                 <DataTemplate x:Key="RealtorTemplate" DataType="{x:Type model:Realtor}">
+                     <controls:RealtorControl/>
+                 </DataTemplate>
              </Application.Resources>
   
     <Application.Styles>

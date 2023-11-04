@@ -1,0 +1,27 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="DemoApplication.Controls.RealtorControl"
+             x:CompileBindings="False">
+    <StackPanel Orientation="Vertical">
+        <StackPanel.DataContext>
+            <Binding Path="Realtor" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+        </StackPanel.DataContext>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Id -"></Label>
+            <Label Content="{Binding Id}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="ФИО -"></Label>
+            <Label Content="{Binding FirstName}"/>
+            <Label Content="{Binding SecondName}"/>
+            <Label Content="{Binding LastName}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Доля -"></Label>
+            <Label Content="{Binding Share}"/>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

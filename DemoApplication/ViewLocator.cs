@@ -56,6 +56,14 @@ public class ViewLocator : IDataTemplate
                 Content = data
             };
         }
+        else if (dataType == typeof(Realtor))
+        {
+            return new ContentControl
+            {
+                ContentTemplate = (IDataTemplate)Application.Current.Resources["RealtorTemplate"],
+                Content = data
+            };
+        }
         if (type != null)
         {
             return (Control)Activator.CreateInstance(type)!;

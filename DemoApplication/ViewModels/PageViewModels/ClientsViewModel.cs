@@ -60,6 +60,11 @@ public class ClientsViewModel : ViewModelBase
         get => _selectedClient;
         set
         {
+            if (value == null)
+            {
+                this.RaiseAndSetIfChanged(ref _selectedClient, value);
+                return;
+            }
             if (_countOfSelections == 1)
             {
                 this.RaiseAndSetIfChanged(ref _selectedClient, value);
@@ -120,7 +125,6 @@ public class ClientsViewModel : ViewModelBase
     }
 
     private string _selectedComboBoxItem = "Нет";
-
     public string SelectedComboBoxItem
     {
         get => _selectedComboBoxItem;
@@ -289,6 +293,8 @@ public class ClientsViewModel : ViewModelBase
 
             cmd.CommandText = query3;
             cmd.ExecuteNonQuery();
+            SelectedClient = null;
+            SelectedComboBoxItem = "Нет";
             GetAllClients();
         }
         catch (Exception ex)
@@ -505,6 +511,7 @@ public class ClientsViewModel : ViewModelBase
             OnPropertyChanged(nameof(SelectedClientDemands));
         }
     }
+    
     private void GetSpecificClientSupplies(int id)
     {
         MySqlConnection connection = DBUtils.GetDBConnection();
@@ -673,7 +680,6 @@ public class ClientsViewModel : ViewModelBase
         {
             connection.Dispose();
             connection.Close();
-            OnPropertyChanged(nameof(Clients));
         }
     }
     

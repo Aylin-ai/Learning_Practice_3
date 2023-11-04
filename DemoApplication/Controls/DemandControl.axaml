@@ -15,12 +15,20 @@
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="Риелтор -"></Label>
+                                <Label Content="{Binding Realtor.Id}"/>
                                 <Label Content="{Binding Realtor.FirstName}"/>
                                 <Label Content="{Binding Realtor.SecondName}"/>
                                 <Label Content="{Binding Realtor.LastName}"/>
                                 <Label Content="{Binding Realtor.Share}"/>
                                 <Label Content="%"/>
                             </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Клиент -"></Label>
+            <Label Content="{Binding Client.Id}"/>
+            <Label Content="{Binding Client.FirstName}"/>
+            <Label Content="{Binding Client.SecondName}"/>
+            <Label Content="{Binding Client.LastName}"/>
+        </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="Объект недвижимости -"/>
                                 <Label Content="{Binding RealEstateType}"/>
