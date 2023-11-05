@@ -858,6 +858,7 @@ public class SuppliesViewModel : ViewModelBase
             string query1 = "Select * from client where id = @clientId;";
             string query2 = "Select * from realtor where id = @realtorId;";
             string query3 = "Select * from address where RealEstateId = @realEstateId;";
+            string query4 = "Select * from coordinates where RealEstateId = @realEstateId;";
             
             string checkQuery1 = "Select * from apartment where RealEstateId = @id";
             string checkQuery2 = "Select * from house where RealEstateId = @id";
@@ -949,22 +950,54 @@ public class SuppliesViewModel : ViewModelBase
                 } 
                 readerInside.Close();
                 
+                checkComand.CommandText = query4; 
+                readerInside = checkComand.ExecuteReader(); 
+                if (readerInside.HasRows) 
+                {
+                    while (readerInside.Read())
+                    {
+                        supply.RealEstate.Coordinates = new Coordinates();
+                        supply.RealEstate.Coordinates.Latitude = readerInside.IsDBNull(1) ? 0 : readerInside.GetFloat(1);
+                        supply.RealEstate.Coordinates.Longitude = readerInside.IsDBNull(2) ? 0 : readerInside.GetFloat(2);
+                    }
+                } 
+                readerInside.Close();
+                
                 
                 checkComand.Parameters.AddWithValue("@id", supply.RealEstate.Id); 
                 
                 checkComand.CommandText = checkQuery1;
                 readerInside = checkComand.ExecuteReader(); 
-                if (readerInside.HasRows)
-                {
-                    supply.RealEstate.Type = "Квартира";
+                if (readerInside.HasRows) 
+                { 
+                    while (readerInside.Read())
+                    {
+                        supply.RealEstate.MoreInformation = new RealEstateMoreInformation()
+                        {
+                            Floor = reader.IsDBNull(1) ? 0 : readerInside.GetInt32(1),
+                            Rooms = readerInside.IsDBNull(2) ? 0 : readerInside.GetInt32(2),
+                            TotalArea = reader.IsDBNull(3) ? 0 : readerInside.GetFloat(3)
+
+                        };
+                        supply.RealEstate.Type = "Квартира";
+                    }
                 } 
                 readerInside.Close();
                 
                 checkComand.CommandText = checkQuery2; 
                 readerInside = checkComand.ExecuteReader(); 
                 if (readerInside.HasRows) 
-                {
-                    supply.RealEstate.Type = "Дом";
+                { 
+                    while (readerInside.Read()) 
+                    { 
+                        supply.RealEstate.MoreInformation = new RealEstateMoreInformation() 
+                        { 
+                            Floor = reader.IsDBNull(1) ? 0 : readerInside.GetInt32(1), 
+                            Rooms = readerInside.IsDBNull(2) ? 0 : readerInside.GetInt32(2), 
+                            TotalArea = reader.IsDBNull(3) ? 0 : readerInside.GetFloat(3)
+                        }; 
+                        supply.RealEstate.Type = "Дом";
+                    }
                 }
                 readerInside.Close();
                 
@@ -972,7 +1005,14 @@ public class SuppliesViewModel : ViewModelBase
                 readerInside = checkComand.ExecuteReader(); 
                 if (readerInside.HasRows) 
                 { 
-                    supply.RealEstate.Type = "Земля";
+                    while (readerInside.Read()) 
+                    { 
+                        supply.RealEstate.MoreInformation = new RealEstateMoreInformation() 
+                        { 
+                            TotalArea = reader.IsDBNull(1) ? 0 : readerInside.GetFloat(1)
+                        };
+                        supply.RealEstate.Type = "Земля";
+                    }
                 } 
                 readerInside.Close();
                 return supply;
