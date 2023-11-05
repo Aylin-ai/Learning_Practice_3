@@ -76,7 +76,7 @@ public class DealsViewModel : ViewModelBase
     
     private ObservableCollection<string> _comboBoxCollectionOfChoice = new ObservableCollection<string>()
     {
-        "Предложение", "Потребность"
+        "Нет", "Предложение", "Потребность"
     };
     public ObservableCollection<string> ComboBoxCollectionOfChoice
     {
@@ -96,6 +96,14 @@ public class DealsViewModel : ViewModelBase
         {
             this.RaiseAndSetIfChanged(ref _selectedDemand, value);
             SelectedDeal.Demand = value;
+            if (SelectedComboBoxChoice == "Потребность")
+            {
+                Supplies = GetSuitableSupplies(SelectedDemand.Id);
+                SelectedComboBoxSupply = "";
+                SelectedSupply = null;
+                SelectedDeal.Supply = null;
+                OnPropertyChanged(nameof(SelectedSupply));
+            }
         }
     }
 
@@ -124,6 +132,14 @@ public class DealsViewModel : ViewModelBase
         {
             this.RaiseAndSetIfChanged(ref _selectedSupply, value);
             SelectedDeal.Supply = value;
+            if (SelectedComboBoxChoice == "Предложение")
+            {
+                Demands = GetSuitableDemands(SelectedSupply.Id);
+                SelectedComboBoxDemand = "";
+                SelectedDemand = null;
+                SelectedDeal.Demand = null;
+                OnPropertyChanged(nameof(SelectedDemand));
+            }
         }
     }
 
@@ -265,8 +281,7 @@ public class DealsViewModel : ViewModelBase
         }
     }
 
-    private string _selectedComboBoxChoice;
-
+    private string _selectedComboBoxChoice = "Нет";
     public string SelectedComboBoxChoice
     {
         get => _selectedComboBoxChoice;
@@ -276,10 +291,17 @@ public class DealsViewModel : ViewModelBase
             if (value == "Предложение")
             {
                 IsSupplyChosen = true;
+                Demands = GetSuitableDemands(SelectedSupply.Id);
+            }
+            else if (value == "Потребность")
+            {
+                IsSupplyChosen = false;
+                Supplies = GetSuitableSupplies(SelectedDemand.Id);
             }
             else
             {
-                IsSupplyChosen = false;
+                GetAllFreeSupplies();
+                GetAllFreeDemands();
             }
         }
     }
@@ -336,7 +358,7 @@ public class DealsViewModel : ViewModelBase
         get => _isLandChosenInSupply;
         set => this.RaiseAndSetIfChanged(ref _isLandChosenInSupply, value);
     }
-
+    
     #endregion
     
     #region Команды
@@ -1256,6 +1278,68 @@ public class DealsViewModel : ViewModelBase
             connection.Close();
             OnPropertyChanged(nameof(Supplies));
         }
+    }
+
+    private ObservableCollection<Demand> GetSuitableDemands(int id)
+    {
+        Supply supply = GetSpecificSupply(id);
+        GetAllFreeDemands();
+        ComboBoxCollectionOfDemands.Clear();
+
+        ObservableCollection<Demand> suitableDemands = new ObservableCollection<Demand>();
+
+        foreach (var demand in Demands)
+        {
+            if ((demand.MinCost == 0 || (supply.Cost >= demand.MinCost)) && 
+                (demand.MaxCost == 0 || (supply.Cost <= demand.MaxCost)) &&
+                (supply.RealEstate.Type == demand.RealEstateType) &&
+                (demand.MoreInformation.MinArea == 0 || (supply.RealEstate.MoreInformation.TotalArea >= demand.MoreInformation.MinArea)) &&
+                (demand.MoreInformation.MaxArea == 0 || (supply.RealEstate.MoreInformation.TotalArea <= demand.MoreInformation.MaxArea)) &&
+                (demand.MoreInformation.MinRooms == 0 || (supply.RealEstate.MoreInformation.Rooms >= demand.MoreInformation.MinRooms)) &&
+                (demand.MoreInformation.MaxRooms == 0 || (supply.RealEstate.MoreInformation.Rooms <= demand.MoreInformation.MaxRooms)) &&
+                (demand.MoreInformation.MinFloor == 0 || (supply.RealEstate.MoreInformation.Floor >= demand.MoreInformation.MinFloor)) &&
+                (demand.MoreInformation.MaxFloor == 0 || (supply.RealEstate.MoreInformation.Floor <= demand.MoreInformation.MaxFloor)))
+                suitableDemands.Add(demand);
+        }
+
+        foreach (var demand in suitableDemands)
+        {
+            string str = $"{demand.Id} {demand.RealEstateType} {demand.MinCost}-{demand.MaxCost}";
+            ComboBoxCollectionOfDemands.Add(str);
+        }
+
+        return suitableDemands;
+    }
+    
+    private ObservableCollection<Supply> GetSuitableSupplies(int id)
+    {
+        Demand demand = GetSpecificDemand(id);
+        GetAllFreeSupplies();
+        ComboBoxCollectionOfSupplies.Clear();
+
+        ObservableCollection<Supply> suitableSupplies = new ObservableCollection<Supply>();
+
+        foreach (var supply in Supplies)
+        {
+            if ((demand.MinCost == 0 || (supply.Cost >= demand.MinCost)) && 
+                (demand.MaxCost == 0 || (supply.Cost <= demand.MaxCost)) &&
+                (supply.RealEstate.Type == demand.RealEstateType) &&
+                (demand.MoreInformation.MinArea == 0 || (supply.RealEstate.MoreInformation.TotalArea >= demand.MoreInformation.MinArea)) &&
+                (demand.MoreInformation.MaxArea == 0 || (supply.RealEstate.MoreInformation.TotalArea <= demand.MoreInformation.MaxArea)) &&
+                (demand.MoreInformation.MinRooms == 0 || (supply.RealEstate.MoreInformation.Rooms >= demand.MoreInformation.MinRooms)) &&
+                (demand.MoreInformation.MaxRooms == 0 || (supply.RealEstate.MoreInformation.Rooms <= demand.MoreInformation.MaxRooms)) &&
+                (demand.MoreInformation.MinFloor == 0 || (supply.RealEstate.MoreInformation.Floor >= demand.MoreInformation.MinFloor)) &&
+                (demand.MoreInformation.MaxFloor == 0 || (supply.RealEstate.MoreInformation.Floor <= demand.MoreInformation.MaxFloor)))
+                suitableSupplies.Add(supply);
+        }
+
+        foreach (var supply in suitableSupplies)
+        {
+            string str = $"{supply.Id} {supply.RealEstate.Type} {supply.Cost}";
+            ComboBoxCollectionOfSupplies.Add(str);
+        }
+
+        return suitableSupplies;
     }
     
     private bool IsTwoDealsEven(Deal deal1, Deal deal2)
