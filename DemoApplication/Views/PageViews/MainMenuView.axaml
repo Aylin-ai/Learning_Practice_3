@@ -5,47 +5,52 @@
              xmlns:pageViewModels="clr-namespace:DemoApplication.ViewModels.PageViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
              x:Class="DemoApplication.Views.PageViews.MainMenuView"
-             x:DataType="pageViewModels:MainMenuViewModel">
-    <UserControl.Styles>
-        <Style Selector="Button.butt">
-            <Setter Property="Button.Margin" Value="10"/>
-            <Setter Property="Button.Background" Value="Black"/>
-            <Setter Property="Button.Foreground" Value="White"/>
-            <Setter Property="Button.BorderBrush" Value="White"/>
-            <Setter Property="Button.HorizontalAlignment" Value="Center"/>
-            <Setter Property="Button.VerticalAlignment" Value="Center"/>
-            <Setter Property="FontSize" Value="24"/>
-        </Style>
-    </UserControl.Styles>
+             x:DataType="pageViewModels:MainMenuViewModel"
+             x:CompileBindings="False">
+        
+        <UserControl.DataContext>
+                <pageViewModels:MainMenuViewModel/>
+        </UserControl.DataContext>
+        
+        <UserControl.Styles>
+                <Style Selector="Button">
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="Foreground" Value="Black"/>
+                        <Setter Property="BorderBrush" Value="Black"/>
+                        <Setter Property="FontSize" Value="30"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                </Style>
+        </UserControl.Styles>
+        
+        <DockPanel LastChildFill="True">
+                
+                <Grid>
+                        <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        
+                        <Button Content="Объекты недвижимости"
+                                Command="{Binding $parent[Window].DataContext.NavigateToRealEstatesCommand}"/>
+                        <Button Grid.Row="1" Content="Предложения"
+                                Command="{Binding $parent[Window].DataContext.NavigateToSuppliesCommand}"/>
+                        <Button Grid.Row="2" Content="Потребности"
+                                Command="{Binding $parent[Window].DataContext.NavigateToDemandsCommand}"/>
+                        <Button Grid.Row="3" Content="Сделки"
+                                Command="{Binding $parent[Window].DataContext.NavigateToDealsCommand}"/>
+                        <Button Grid.Row="4" Content="Клиенты"
+                                Command="{Binding $parent[Window].DataContext.NavigateToClientsCommand}"/>
+                        <Button Grid.Row="5" Content="Риелторы"
+                                Command="{Binding $parent[Window].DataContext.NavigateToRealtorsCommand}"/>
+                        
+                </Grid>
+                
+        </DockPanel>
     
-    <StackPanel Orientation="Vertical"
-                Margin="10"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center">
-        <Button Content="Объекты недвижимости"
-                Classes="butt"
-                x:CompileBindings="False"
-                Command="{Binding $parent[Window].DataContext.NavigateToRealEstatesCommand}"/>
-        <Button Content="Предложения"
-                Classes="butt"
-                x:CompileBindings="False"
-                Command="{Binding $parent[Window].DataContext.NavigateToSuppliesCommand}"/>
-        <Button Content="Потребности"
-                Classes="butt"
-                x:CompileBindings="False"
-                Command="{Binding $parent[Window].DataContext.NavigateToDemandsCommand}"/>
-        <Button Content="Сделки"
-                Classes="butt"
-                x:CompileBindings="False"
-                Command="{Binding $parent[Window].DataContext.NavigateToDealsCommand}"/>
-        <Button Content="Клиенты"
-                Classes="butt" 
-                x:CompileBindings="False"
-                Command="{Binding $parent[Window].DataContext.NavigateToClientsCommand}"/>
-        <Button Content="Риелторы"
-                Classes="butt"
-                x:CompileBindings="False"
-                Command="{Binding $parent[Window].DataContext.NavigateToRealtorsCommand}"/>
-    </StackPanel>
     
 </UserControl>

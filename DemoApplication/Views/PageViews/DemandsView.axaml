@@ -81,156 +81,163 @@
                             Command="{Binding CancelDemandEditionCommand}"/>
                 </Grid>
                 
-                <StackPanel Orientation="Vertical">
-                    
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Мин. цена -"/>
-                        <TextBox Text="{Binding SelectedDemand.MinCost, Mode=TwoWay}"/>
-                    </StackPanel>
-                    
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Макс. цена -"/>
-                        <TextBox Text="{Binding SelectedDemand.MaxCost, Mode=TwoWay}"/>
-                    </StackPanel>
-                    
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Адрес -"/>
-                        <Label Content="г."/>
-                        <TextBox Text="{Binding SelectedDemand.Address.City, Mode=TwoWay}"/>
-                        <Label Content="ул."/>
-                        <TextBox Text="{Binding SelectedDemand.Address.Street, Mode=TwoWay}"/>
-                        <Label Content="д."/>
-                        <TextBox Text="{Binding SelectedDemand.Address.House, Mode=TwoWay}"/>
-                        <Label Content="кв."/>
-                        <TextBox Text="{Binding SelectedDemand.Address.Apartment, Mode=TwoWay}"/>
-                    </StackPanel>
-                    
+                <ScrollViewer>
                     <StackPanel Orientation="Vertical">
+                    
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Мин. цена -"/>
+                            <TextBox Text="{Binding SelectedDemand.MinCost, Mode=TwoWay}"/>
+                        </StackPanel>
                         
-                        <Label Content="Клиент"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Макс. цена -"/>
+                            <TextBox Text="{Binding SelectedDemand.MaxCost, Mode=TwoWay}"/>
+                        </StackPanel>
                         
-                        <ComboBox ItemsSource="{Binding ComboBoxCollectionOfClients}"
-                                  SelectedItem="{Binding SelectedComboBoxClient}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Адрес -"/>
+                            <Label Content="г."/>
+                            <TextBox Text="{Binding SelectedDemand.Address.City, Mode=TwoWay}"/>
+                            <Label Content="ул."/>
+                            <TextBox Text="{Binding SelectedDemand.Address.Street, Mode=TwoWay}"/>
+                        </StackPanel>
+                        
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="д."/>
+                            <TextBox Text="{Binding SelectedDemand.Address.House, Mode=TwoWay}"/>
+                            <Label Content="кв."/>
+                            <TextBox Text="{Binding SelectedDemand.Address.Apartment, Mode=TwoWay}"/>
+                        </StackPanel>
                         
                         <StackPanel Orientation="Vertical">
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Id -"/>
-                                <Label Content="{Binding SelectedClient.Id}"/>
+                            
+                            <Label Content="Клиент"/>
+                            
+                            <ComboBox ItemsSource="{Binding ComboBoxCollectionOfClients}"
+                                      SelectedItem="{Binding SelectedComboBoxClient}"/>
+                            
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Id -"/>
+                                    <Label Content="{Binding SelectedClient.Id}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Имя -"/>
+                                    <Label Content="{Binding SelectedClient.FirstName}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Фамилия -"/>
+                                    <Label Content="{Binding SelectedClient.SecondName}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Отчество -"/>
+                                    <Label Content="{Binding SelectedClient.LastName}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Номер телефона -"/>
+                                    <Label Content="{Binding SelectedClient.Phone}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Email -"/>
+                                    <Label Content="{Binding SelectedClient.Email}"/>
+                                </StackPanel>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Имя -"/>
-                                <Label Content="{Binding SelectedClient.FirstName}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Фамилия -"/>
-                                <Label Content="{Binding SelectedClient.SecondName}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Отчество -"/>
-                                <Label Content="{Binding SelectedClient.LastName}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Номер телефона -"/>
-                                <Label Content="{Binding SelectedClient.Phone}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Email -"/>
-                                <Label Content="{Binding SelectedClient.Email}"/>
-                            </StackPanel>
+                            
                         </StackPanel>
-                        
-                    </StackPanel>
-                    
-                    <StackPanel Orientation="Vertical">
-                        
-                        <Label Content="Риелтор"/>
-                        
-                        <ComboBox ItemsSource="{Binding ComboBoxCollectionOfRealtors}"
-                                  SelectedItem="{Binding SelectedComboBoxRealtor}"/>
                         
                         <StackPanel Orientation="Vertical">
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Id -"/>
-                                <Label Content="{Binding SelectedRealtor.Id}"/>
+                            
+                            <Label Content="Риелтор"/>
+                            
+                            <ComboBox ItemsSource="{Binding ComboBoxCollectionOfRealtors}"
+                                      SelectedItem="{Binding SelectedComboBoxRealtor}"/>
+                            
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Id -"/>
+                                    <Label Content="{Binding SelectedRealtor.Id}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Имя -"/>
+                                    <Label Content="{Binding SelectedRealtor.FirstName}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Фамилия -"/>
+                                    <Label Content="{Binding SelectedRealtor.SecondName}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Отчество -"/>
+                                    <Label Content="{Binding SelectedRealtor.LastName}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Доля -"/>
+                                    <Label Content="{Binding SelectedRealtor.Share}"/>
+                                </StackPanel>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Имя -"/>
-                                <Label Content="{Binding SelectedRealtor.FirstName}"/>
+                            
+                        </StackPanel>
+                        
+                        <StackPanel Orientation="Vertical">
+                            
+                            <Label Content="Подробная информация"/>
+                            
+                            <ComboBox ItemsSource="{Binding ComboBoxCollectionOfRealEstateTypes}"
+                                      SelectedItem="{Binding SelectedComboBoxRealEstateType}"/>
+                            
+                            <StackPanel Orientation="Vertical"
+                                        IsVisible="{Binding !IsLandChosen}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Мин. площадь -"/>
+                                    <TextBox Text="{Binding SelectedDemand.MoreInformation.MinArea,
+                                    Mode=TwoWay}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Макс. площадь -"/>
+                                    <TextBox Text="{Binding SelectedDemand.MoreInformation.MaxArea,
+                                    Mode=TwoWay}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Мин. кол-во комнат -"/>
+                                    <TextBox Text="{Binding SelectedDemand.MoreInformation.MinRooms,
+                                    Mode=TwoWay}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Макс. кол-во комнат -"/>
+                                    <TextBox Text="{Binding SelectedDemand.MoreInformation.MaxRooms,
+                                    Mode=TwoWay}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Мин. этаж(ность) -"/>
+                                    <TextBox Text="{Binding SelectedDemand.MoreInformation.MinFloor,
+                                    Mode=TwoWay}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Макс. этаж(ность) -"/>
+                                    <TextBox Text="{Binding SelectedDemand.MoreInformation.MaxFloor,
+                                    Mode=TwoWay}"/>
+                                </StackPanel>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Фамилия -"/>
-                                <Label Content="{Binding SelectedRealtor.SecondName}"/>
+                            
+                            <StackPanel Orientation="Vertical"
+                                        IsVisible="{Binding IsLandChosen}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Мин. площадь -"/>
+                                    <TextBox Text="{Binding SelectedDemand.MoreInformation.MinArea,
+                                    Mode=TwoWay}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Макс. площадь -"/>
+                                    <TextBox Text="{Binding SelectedDemand.MoreInformation.MaxArea,
+                                    Mode=TwoWay}"/>
+                                </StackPanel>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Отчество -"/>
-                                <Label Content="{Binding SelectedRealtor.LastName}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Доля -"/>
-                                <Label Content="{Binding SelectedRealtor.Share}"/>
-                            </StackPanel>
+                            
                         </StackPanel>
                         
                     </StackPanel>
-                    
-                    <StackPanel Orientation="Vertical">
-                        
-                        <Label Content="Подробная информация"/>
-                        
-                        <ComboBox ItemsSource="{Binding ComboBoxCollectionOfRealEstateTypes}"
-                                  SelectedItem="{Binding SelectedComboBoxRealEstateType}"/>
-                        
-                        <StackPanel Orientation="Vertical"
-                                    IsVisible="{Binding !IsLandChosen}">
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Мин. площадь -"/>
-                                <TextBox Text="{Binding SelectedDemand.MoreInformation.MinArea,
-                                Mode=TwoWay}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Макс. площадь -"/>
-                                <TextBox Text="{Binding SelectedDemand.MoreInformation.MaxArea,
-                                Mode=TwoWay}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Мин. кол-во комнат -"/>
-                                <TextBox Text="{Binding SelectedDemand.MoreInformation.MinRooms,
-                                Mode=TwoWay}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Макс. кол-во комнат -"/>
-                                <TextBox Text="{Binding SelectedDemand.MoreInformation.MaxRooms,
-                                Mode=TwoWay}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Мин. этаж(ность) -"/>
-                                <TextBox Text="{Binding SelectedDemand.MoreInformation.MinFloor,
-                                Mode=TwoWay}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Макс. этаж(ность) -"/>
-                                <TextBox Text="{Binding SelectedDemand.MoreInformation.MaxFloor,
-                                Mode=TwoWay}"/>
-                            </StackPanel>
-                        </StackPanel>
-                        
-                        <StackPanel Orientation="Vertical"
-                                    IsVisible="{Binding IsLandChosen}">
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Мин. площадь -"/>
-                                <TextBox Text="{Binding SelectedDemand.MoreInformation.MinArea,
-                                Mode=TwoWay}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Макс. площадь -"/>
-                                <TextBox Text="{Binding SelectedDemand.MoreInformation.MaxArea,
-                                Mode=TwoWay}"/>
-                            </StackPanel>
-                        </StackPanel>
-                        
-                    </StackPanel>
-                    
-                </StackPanel>
+                </ScrollViewer>
+                
+                
                 
             </DockPanel>
             

@@ -27,8 +27,9 @@
                                 HorizontalAlignment="Center"
                                 Command="{Binding $parent[Window].DataContext.NavigateToRealEstatesCommand}"/>
                     </Grid>
-                
-                    <StackPanel Orientation="Vertical">
+        
+        <ScrollViewer>
+            <StackPanel Orientation="Vertical">
                         <Label Content="Адрес"/>
                         <StackPanel Orientation="Horizontal">
                             <Label Content="г."/>
@@ -89,5 +90,8 @@
                         </StackPanel>
                         
                     </StackPanel>
+        </ScrollViewer>
+                
+                    
                 </DockPanel>
 </UserControl>

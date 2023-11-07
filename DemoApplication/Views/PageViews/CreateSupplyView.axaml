@@ -24,14 +24,15 @@
                                 Command="{Binding SaveSupplyCommand}"/>
                         <Button Grid.Column="1" Content="Отмена"
                                 HorizontalAlignment="Center"
-                                Command="{Binding CancelSupplyEditionCommand}"/>
+                                Command="{Binding $parent[Window].DataContext.NavigateToSuppliesCommand}"/>
                     </Grid>
-                    
-                    <StackPanel Orientation="Vertical">
+        
+        <ScrollViewer>
+            <StackPanel Orientation="Vertical">
                         
                         <StackPanel Orientation="Horizontal">
                             <Label Content="Цена -"/>
-                            <TextBox Text="{Binding SelectedSupply.Cost, Mode=TwoWay}"/>
+                            <TextBox Text="{Binding Supply.Cost, Mode=TwoWay}"/>
                         </StackPanel>
                         
                         <StackPanel Orientation="Vertical">
@@ -151,7 +152,9 @@
                         </StackPanel>
                         
                     </StackPanel>
+        </ScrollViewer>
+        
                     
-                </DockPanel>
+    </DockPanel>
     
 </UserControl>
