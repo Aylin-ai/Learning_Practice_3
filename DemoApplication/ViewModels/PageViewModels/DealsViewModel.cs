@@ -94,15 +94,48 @@ public class DealsViewModel : ViewModelBase
         get => _selectedDemand;
         set
         {
-            this.RaiseAndSetIfChanged(ref _selectedDemand, value);
-            SelectedDeal.Demand = value;
-            if (SelectedComboBoxChoice == "Потребность")
+            try
             {
-                Supplies = GetSuitableSupplies(SelectedDemand.Id);
-                SelectedComboBoxSupply = "";
-                SelectedSupply = null;
-                SelectedDeal.Supply = null;
-                OnPropertyChanged(nameof(SelectedSupply));
+                this.RaiseAndSetIfChanged(ref _selectedDemand, value);
+                SelectedDeal.Demand = value;
+                if (SelectedComboBoxChoice == "Потребность")
+                {
+                    Supplies = GetSuitableSupplies(SelectedDemand.Id);
+                    SelectedComboBoxSupply = "";
+                    SelectedSupply = null;
+                    SelectedDeal.Supply = null;
+                    OnPropertyChanged(nameof(SelectedSupply));
+                    return;
+                }
+                if (SelectedDemand != null && SelectedSupply != null)
+                {
+                    double companyCostOfSeller = 0;
+                    double companyCostOfBuyer = 0;
+
+                    if (SelectedDeal.Supply.RealEstate.Type == "Квартира")
+                        companyCostOfSeller = 36000 + SelectedDeal.Supply.Cost * 0.01;
+                    else if (SelectedDeal.Supply.RealEstate.Type == "Дом")
+                        companyCostOfSeller = 30000 + SelectedDeal.Supply.Cost * 0.01;
+                    else if (SelectedDeal.Supply.RealEstate.Type == "Земля")
+                        companyCostOfSeller = 36000 + SelectedDeal.Supply.Cost * 0.01;
+                    companyCostOfBuyer = SelectedDeal.Supply.Cost * 0.03;
+                    Cost = new Pay()
+                    {
+                        CostOfRealtorServiceForCustomerSeller =
+                            companyCostOfSeller * (Convert.ToDouble(SelectedSupply.Realtor.Share) / 100),
+                        CostOfCompanyServiceForCustomerSeller =
+                            companyCostOfSeller * ((100 - Convert.ToDouble(SelectedSupply.Realtor.Share)) / 100),
+                        CostOfRealtorServiceForCustomerBuyer =
+                            companyCostOfBuyer * (Convert.ToDouble(SelectedDemand.Realtor.Share) / 100),
+                        CostOfCompanyServiceForCustomerBuyer =
+                            companyCostOfBuyer * ((100 - Convert.ToDouble(SelectedDemand.Realtor.Share)) / 100)
+                    };
+                    OnPropertyChanged(nameof(Cost));   
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
     }
@@ -130,15 +163,49 @@ public class DealsViewModel : ViewModelBase
         get => _selectedSupply;
         set
         {
-            this.RaiseAndSetIfChanged(ref _selectedSupply, value);
-            SelectedDeal.Supply = value;
-            if (SelectedComboBoxChoice == "Предложение")
+            try
             {
-                Demands = GetSuitableDemands(SelectedSupply.Id);
-                SelectedComboBoxDemand = "";
-                SelectedDemand = null;
-                SelectedDeal.Demand = null;
-                OnPropertyChanged(nameof(SelectedDemand));
+                this.RaiseAndSetIfChanged(ref _selectedSupply, value);
+                SelectedDeal.Supply = value;
+                if (SelectedComboBoxChoice == "Предложение")
+                {
+                    Demands = GetSuitableDemands(SelectedSupply.Id);
+                    SelectedComboBoxDemand = "";
+                    SelectedDemand = null;
+                    SelectedDeal.Demand = null;
+                    OnPropertyChanged(nameof(SelectedDemand));
+                    return;
+                }
+
+                if (SelectedDemand != null && SelectedSupply != null)
+                {
+                    double companyCostOfSeller = 0;
+                    double companyCostOfBuyer = 0;
+
+                    if (SelectedDeal.Supply.RealEstate.Type == "Квартира")
+                        companyCostOfSeller = 36000 + SelectedDeal.Supply.Cost * 0.01;
+                    else if (SelectedDeal.Supply.RealEstate.Type == "Дом")
+                        companyCostOfSeller = 30000 + SelectedDeal.Supply.Cost * 0.01;
+                    else if (SelectedDeal.Supply.RealEstate.Type == "Земля")
+                        companyCostOfSeller = 36000 + SelectedDeal.Supply.Cost * 0.01;
+                    companyCostOfBuyer = SelectedDeal.Supply.Cost * 0.03;
+                    Cost = new Pay()
+                    {
+                        CostOfRealtorServiceForCustomerSeller =
+                            companyCostOfSeller * (Convert.ToDouble(SelectedSupply.Realtor.Share) / 100),
+                        CostOfCompanyServiceForCustomerSeller =
+                            companyCostOfSeller * ((100 - Convert.ToDouble(SelectedSupply.Realtor.Share)) / 100),
+                        CostOfRealtorServiceForCustomerBuyer =
+                            companyCostOfBuyer * (Convert.ToDouble(SelectedDemand.Realtor.Share) / 100),
+                        CostOfCompanyServiceForCustomerBuyer =
+                            companyCostOfBuyer * ((100 - Convert.ToDouble(SelectedDemand.Realtor.Share)) / 100)
+                    };
+                    OnPropertyChanged(nameof(Cost));   
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
     }
@@ -209,6 +276,32 @@ public class DealsViewModel : ViewModelBase
                 {
                     IsLandChosenInDemand = false;
                 }
+
+                if (SelectedDemand != null && SelectedSupply != null)
+                {
+                    double companyCostOfSeller = 0;
+                    double companyCostOfBuyer = 0;
+
+                    if (SelectedDeal.Supply.RealEstate.Type == "Квартира")
+                        companyCostOfSeller = 36000 + SelectedDeal.Supply.Cost * 0.01;
+                    else if (SelectedDeal.Supply.RealEstate.Type == "Дом")
+                        companyCostOfSeller = 30000 + SelectedDeal.Supply.Cost * 0.01;
+                    else if (SelectedDeal.Supply.RealEstate.Type == "Земля")
+                        companyCostOfSeller = 36000 + SelectedDeal.Supply.Cost * 0.01;
+                    companyCostOfBuyer = SelectedDeal.Supply.Cost * 0.03;
+                    Cost = new Pay()
+                    {
+                        CostOfRealtorServiceForCustomerSeller =
+                            companyCostOfSeller * (Convert.ToDouble(SelectedSupply.Realtor.Share) / 100),
+                        CostOfCompanyServiceForCustomerSeller =
+                            companyCostOfSeller * ((100 - Convert.ToDouble(SelectedSupply.Realtor.Share)) / 100),
+                        CostOfRealtorServiceForCustomerBuyer =
+                            companyCostOfBuyer * (Convert.ToDouble(SelectedDemand.Realtor.Share) / 100),
+                        CostOfCompanyServiceForCustomerBuyer =
+                            companyCostOfBuyer * ((100 - Convert.ToDouble(SelectedDemand.Realtor.Share)) / 100)
+                    };
+                    OnPropertyChanged(nameof(Cost));   
+                }
                 return;
             }
             if (IsCancellingHappening)
@@ -258,6 +351,31 @@ public class DealsViewModel : ViewModelBase
                 else
                 {
                     IsLandChosenInDemand = false;
+                }
+                if (SelectedDemand != null && SelectedSupply != null)
+                {
+                    double companyCostOfSeller = 0;
+                    double companyCostOfBuyer = 0;
+
+                    if (SelectedDeal.Supply.RealEstate.Type == "Квартира")
+                        companyCostOfSeller = 36000 + SelectedDeal.Supply.Cost * 0.01;
+                    else if (SelectedDeal.Supply.RealEstate.Type == "Дом")
+                        companyCostOfSeller = 30000 + SelectedDeal.Supply.Cost * 0.01;
+                    else if (SelectedDeal.Supply.RealEstate.Type == "Земля")
+                        companyCostOfSeller = 36000 + SelectedDeal.Supply.Cost * 0.01;
+                    companyCostOfBuyer = SelectedDeal.Supply.Cost * 0.03;
+                    Cost = new Pay()
+                    {
+                        CostOfRealtorServiceForCustomerSeller =
+                            companyCostOfSeller * (Convert.ToDouble(SelectedSupply.Realtor.Share) / 100),
+                        CostOfCompanyServiceForCustomerSeller =
+                            companyCostOfSeller * ((100 - Convert.ToDouble(SelectedSupply.Realtor.Share)) / 100),
+                        CostOfRealtorServiceForCustomerBuyer =
+                            companyCostOfBuyer * (Convert.ToDouble(SelectedDemand.Realtor.Share) / 100),
+                        CostOfCompanyServiceForCustomerBuyer =
+                            companyCostOfBuyer * ((100 - Convert.ToDouble(SelectedDemand.Realtor.Share)) / 100)
+                    };
+                    OnPropertyChanged(nameof(Cost));   
                 }
             }
         }
@@ -359,6 +477,17 @@ public class DealsViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _isLandChosenInSupply, value);
     }
     
+    #endregion
+
+    #region Отчисления и комиссии
+
+    private Pay _cost;
+    public Pay Cost
+    {
+        get => _cost;
+        set => this.RaiseAndSetIfChanged(ref _cost, value);
+    }
+
     #endregion
     
     #region Команды

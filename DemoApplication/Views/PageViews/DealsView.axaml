@@ -341,6 +341,25 @@
                         
                         <Label Content="Отчисления и комиссия"/>
                         
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Стоимость услуг компании для клиента-продавца -"/>
+                                <Label Content="{Binding Cost.CostOfCompanyServiceForCustomerSeller}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Стоимость услуг риелтора для клиента-продавца -"/>
+                                <Label Content="{Binding Cost.CostOfRealtorServiceForCustomerSeller}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Стоимость услуг компании для клиента-покупателя -"/>
+                                <Label Content="{Binding Cost.CostOfCompanyServiceForCustomerBuyer}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Стоимость услуг риелтора для клиента-покупателя -"/>
+                                <Label Content="{Binding Cost.CostOfRealtorServiceForCustomerBuyer}"/>
+                            </StackPanel>
+                        </StackPanel>
+                        
                     </StackPanel>
                     
                 </StackPanel>
