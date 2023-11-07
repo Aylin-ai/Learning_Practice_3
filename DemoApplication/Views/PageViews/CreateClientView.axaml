@@ -1,0 +1,62 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:pageViewModels="clr-namespace:DemoApplication.ViewModels.PageViewModels"
+             xmlns:models="clr-namespace:DemoApplication.Models"
+             xmlns:controls="clr-namespace:DemoApplication.Controls"
+             mc:Ignorable="d" d:DesignWidth="100" d:DesignHeight="100"
+             x:Class="DemoApplication.Views.PageViews.CreateClientView"
+             x:CompileBindings="False">
+    <UserControl.DataContext>
+        <pageViewModels:CreateClientViewModel/>
+    </UserControl.DataContext>
+    
+    <DockPanel LastChildFill="True">
+            
+            <DockPanel LastChildFill="True"
+                       DockPanel.Dock="Top" HorizontalAlignment="Center">
+                <Grid DockPanel.Dock="Bottom"
+                      Margin="5"
+                      HorizontalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                
+                    <Button Content="Сохранить"
+                            HorizontalAlignment="Center"
+                            Command="{Binding SaveClientCommand}"/>
+                    <Button Grid.Column="2" Content="Отмена"
+                            HorizontalAlignment="Center"
+                            Command="{Binding $parent[Window].DataContext.NavigateToClientsCommand}"/>
+                </Grid>
+                
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Фамилия -"/>
+                        <TextBox Text="{Binding Client.FirstName, Mode=TwoWay}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Имя -"/>
+                        <TextBox Text="{Binding Client.SecondName, Mode=TwoWay}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Отчество -"/>
+                        <TextBox Text="{Binding Client.LastName, Mode=TwoWay}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Номер телефона -"/>
+                        <TextBox Text="{Binding Client.Phone, Mode=TwoWay}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Email -"/>
+                        <TextBox Text="{Binding Client.Email, Mode=TwoWay}"/>
+                    </StackPanel>
+                </StackPanel>
+            </DockPanel>
+            
+        </DockPanel>
+        
+</UserControl>

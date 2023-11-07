@@ -14,6 +14,16 @@
         <entry key="DemoApplication/Views/MainWindow.axaml" value="DemoApplication/DemoApplication.csproj" />
         <entry key="DemoApplication/Views/PageViews/Clients.axaml" value="DemoApplication/DemoApplication.csproj" />
         <entry key="DemoApplication/Views/PageViews/ClientsView.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/PageViews/CreateClientView.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/PageViews/CreateDeal.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/PageViews/CreateDealView.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/PageViews/CreateDemand.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/PageViews/CreateDemandView.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/PageViews/CreateRealEstate.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/PageViews/CreateRealEstateView.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/PageViews/CreateRealtor.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/PageViews/CreateRealtorView.axaml" value="DemoApplication/DemoApplication.csproj" />
+        <entry key="DemoApplication/Views/PageViews/CreateSupplyView.axaml" value="DemoApplication/DemoApplication.csproj" />
         <entry key="DemoApplication/Views/PageViews/DealsView.axaml" value="DemoApplication/DemoApplication.csproj" />
         <entry key="DemoApplication/Views/PageViews/Demands.axaml" value="DemoApplication/DemoApplication.csproj" />
         <entry key="DemoApplication/Views/PageViews/DemandsView.axaml" value="DemoApplication/DemoApplication.csproj" />

@@ -1,0 +1,49 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:pageViewModels="clr-namespace:DemoApplication.ViewModels.PageViewModels"
+             mc:Ignorable="d" d:DesignWidth="100" d:DesignHeight="100"
+             x:Class="DemoApplication.Views.PageViews.CreateRealtorView"
+             x:CompileBindings="False">
+    <UserControl.DataContext>
+        <pageViewModels:CreateRealtorViewModel/>
+    </UserControl.DataContext>
+    
+    <DockPanel LastChildFill="True" HorizontalAlignment="Center">
+                    <Grid DockPanel.Dock="Bottom"
+                          Margin="5"
+                          HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                    
+                        <Button Content="Сохранить"
+                                HorizontalAlignment="Center"
+                                Command="{Binding SaveRealtorCommand}"/>
+                        <Button Grid.Column="1" Content="Отмена"
+                                HorizontalAlignment="Center"
+                                Command="{Binding CancelRealtorEditionCommand}"/>
+                    </Grid>
+                    
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Фамилия -"/>
+                            <TextBox Text="{Binding Realtor.FirstName, Mode=TwoWay}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Имя -"/>
+                            <TextBox Text="{Binding Realtor.SecondName, Mode=TwoWay}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Отчество -"/>
+                            <TextBox Text="{Binding Realtor.LastName, Mode=TwoWay}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Доля -"/>
+                            <TextBox Text="{Binding Realtor.Share, Mode=TwoWay}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </DockPanel>
+</UserControl>

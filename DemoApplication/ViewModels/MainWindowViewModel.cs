@@ -23,7 +23,10 @@ public class MainWindowViewModel : ViewModelBase
     #region Команды
 
     #region Команды навигации
-    
+    public void NavigateToMainMenuCommand(object parameter)
+    {
+        CurrentViewModel = new MainMenuViewModel();
+    }
     public void NavigateToRealEstatesCommand(object parameter)
     {
         CurrentViewModel = new RealEstatesViewModel();
@@ -47,6 +50,30 @@ public class MainWindowViewModel : ViewModelBase
     public void NavigateToRealtorsCommand(object parameter)
     {
         CurrentViewModel = new RealtorsViewModel();
+    }
+    public void NavigateToCreateClientCommand(object parameter)
+    {
+        CurrentViewModel = new CreateClientViewModel();
+    }
+    public void NavigateToCreateSupplyCommand(object parameter)
+    {
+        CurrentViewModel = new CreateSupplyViewModel();
+    }
+    public void NavigateToCreateDealCommand(object parameter)
+    {
+        CurrentViewModel = new CreateDealViewModel();
+    }
+    public void NavigateToCreateDemandCommand(object parameter)
+    {
+        CurrentViewModel = new CreateDemandViewModel();
+    }
+    public void NavigateToCreateRealEstateCommand(object parameter)
+    {
+        CurrentViewModel = new CreateRealEstateViewModel();
+    }
+    public void NavigateToCreateRealtorCommand(object parameter)
+    {
+        CurrentViewModel = new CreateRealtorViewModel();
     }
     #endregion
 

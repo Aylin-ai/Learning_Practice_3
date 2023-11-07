@@ -55,5 +55,29 @@
         <DependentUpon>Deals.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\PageViews\CreateClientView.axaml.cs">
+        <DependentUpon>CreateClient.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\PageViews\CreateDealView.axaml.cs">
+        <DependentUpon>CreateDeal.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\PageViews\CreateDemandView.axaml.cs">
+        <DependentUpon>CreateDemand.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\PageViews\CreateRealEstateView.axaml.cs">
+        <DependentUpon>CreateRealEstate.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\PageViews\CreateRealtorView.axaml.cs">
+        <DependentUpon>CreateRealtor.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\PageViews\CreateSupplyView.axaml.cs">
+        <DependentUpon>CreateSupply.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 </Project>

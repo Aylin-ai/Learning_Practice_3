@@ -1,0 +1,93 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:pageViewModels="clr-namespace:DemoApplication.ViewModels.PageViewModels"
+             mc:Ignorable="d" d:DesignWidth="100" d:DesignHeight="100"
+             x:Class="DemoApplication.Views.PageViews.CreateRealEstateView"
+             x:CompileBindings="False">
+    <UserControl.DataContext>
+        <pageViewModels:CreateRealEstateViewModel/>
+    </UserControl.DataContext>
+    
+    <DockPanel Dock="Top"
+               HorizontalAlignment="Center">
+                    <Grid DockPanel.Dock="Bottom"
+                          Margin="5"
+                          HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Button Content="Сохранить"
+                                HorizontalAlignment="Center"
+                                Command="{Binding SaveRealEstateCommand}"/>
+                        <Button Grid.Column="1" Content="Отмена"
+                                HorizontalAlignment="Center"
+                                Command="{Binding $parent[Window].DataContext.NavigateToRealEstatesCommand}"/>
+                    </Grid>
+                
+                    <StackPanel Orientation="Vertical">
+                        <Label Content="Адрес"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="г."/>
+                            <TextBox Text="{Binding RealEstate.Address.City, 
+                            Mode=TwoWay}"/>
+                            <Label Content="ул."/>
+                            <TextBox Text="{Binding RealEstate.Address.Street,
+                            Mode=TwoWay}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="д."/>
+                            <TextBox Text="{Binding RealEstate.Address.House,
+                            Mode=TwoWay}"/>
+                            <Label Content="кв."/>
+                            <TextBox Text="{Binding RealEstate.Address.Apartment,
+                            Mode=TwoWay}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Широта (от -90 до 90) - "/>
+                            <TextBox Text="{Binding RealEstate.Coordinates.Latitude,
+                            Mode=TwoWay}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="; Долгота (от -180 до 180) -"/>
+                            <TextBox Text="{Binding RealEstate.Coordinates.Longitude,
+                            Mode=TwoWay}"/>
+                        </StackPanel>
+                        
+                        <ComboBox ItemsSource="{Binding ComboBoxCollectionOfRealEstateTypes}"
+                                  SelectedItem="{Binding SelectedComboBoxRealEstateType}"/>
+                        
+                        <StackPanel Orientation="Vertical"
+                                    IsVisible="{Binding !IsLandChosen}">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Этаж - "/>
+                                <TextBox Text="{Binding RealEstate.MoreInformation.Floor,
+                            Mode=TwoWay}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Количество комнат - "/>
+                                <TextBox Text="{Binding RealEstate.MoreInformation.Rooms,
+                            Mode=TwoWay}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Площадь - "/>
+                                <TextBox Text="{Binding RealEstate.MoreInformation.TotalArea,
+                            Mode=TwoWay}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    
+                        <StackPanel Orientation="Vertical"
+                                    IsVisible="{Binding IsLandChosen}">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Площадь - "/>
+                                <TextBox Text="{Binding RealEstate.MoreInformation.TotalArea,
+                            Mode=TwoWay}"/>
+                            </StackPanel>
+                        </StackPanel>
+                        
+                    </StackPanel>
+                </DockPanel>
+</UserControl>

@@ -9,10 +9,6 @@ public class MainMenuViewModel : ViewModelBase
     public string Greetings { get; set; } = "greetings";
     public MainMenuViewModel()
     {
-        NavigationStore navigationStore = NavigationStoreProvider.GetNavigationStore();
-        #region Команды
-        
-        #endregion
     }
     
 }

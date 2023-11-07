@@ -12,98 +12,108 @@
         <pageViewModel:RealtorsViewModel/>
     </UserControl.DataContext>
     
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
+    <DockPanel LastChildFill="True">
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <Button Content="Назад" HorizontalAlignment="Left"
+                    Command="{Binding $parent[Window].DataContext.NavigateToMainMenuCommand}"/>
+            <Button Content="Добавить" HorizontalAlignment="Right"
+                    Command="{Binding $parent[Window].DataContext.NavigateToCreateRealtorCommand}"/>
+        </StackPanel>
         
-        <DockPanel LastChildFill="True">
-            <ListBox ItemsSource="{Binding Realtors}"
-                     SelectedItem="{Binding SelectedRealtor}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate DataType="models:Realtor">
-                        <controls:RealtorControl Realtor="{Binding}"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </DockPanel>
-        
-        <DockPanel Grid.Column="1" LastChildFill="True"
-                   IsEnabled="{Binding IsRealtorSelected}">
-            <ComboBox HorizontalAlignment="Center"
-                      DockPanel.Dock="Top"
-                      ItemsSource="{Binding ComboBoxCollection}"
-                      SelectedItem="{Binding SelectedComboBoxItem}"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
             
-            <ListBox ItemsSource="{Binding SelectedRealtorDemands}"
-                     IsVisible="{Binding ListBoxDemandIsVisible}"
-                     DockPanel.Dock="Top" HorizontalAlignment="Center">
-                <ListBox.ItemTemplate>
-                    <DataTemplate DataType="models:Demand">
-                        <controls:DemandControl Demand="{Binding}"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            
-            <ListBox ItemsSource="{Binding SelectedRealtorSupplies}"
-                     IsVisible="{Binding ListBoxSupplyIsVisible}"
-                     DockPanel.Dock="Top" HorizontalAlignment="Center">
-                <ListBox.ItemTemplate>
-                    <DataTemplate DataType="models:Supply">
-                        <controls:SupplyControl Supply="{Binding}"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            
-            <DockPanel LastChildFill="True"
-                       IsVisible="{Binding IsUserEditingVisible}"
-                       DockPanel.Dock="Top" HorizontalAlignment="Center">
-                <Grid DockPanel.Dock="Bottom"
-                      Margin="5"
-                      HorizontalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                
-                    <Button Content="Сохранить"
-                            HorizontalAlignment="Center"
-                            Command="{Binding SaveRealtorCommand}"/>
-                    <Button Grid.Column="1" Content="Удалить"
-                            HorizontalAlignment="Center"
-                            Command="{Binding DeleteRealtorCommand}"/>
-                    <Button Grid.Column="2" Content="Отмена"
-                            HorizontalAlignment="Center"
-                            Command="{Binding CancelRealtorEditionCommand}"/>
-                </Grid>
-                
-                <StackPanel Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Id -"/>
-                        <Label Content="{Binding SelectedRealtor.Id}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Фамилия -"/>
-                        <TextBox Text="{Binding SelectedRealtor.FirstName, Mode=TwoWay}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Имя -"/>
-                        <TextBox Text="{Binding SelectedRealtor.SecondName, Mode=TwoWay}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Отчество -"/>
-                        <TextBox Text="{Binding SelectedRealtor.LastName, Mode=TwoWay}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Доля -"/>
-                        <TextBox Text="{Binding SelectedRealtor.Share, Mode=TwoWay}"/>
-                    </StackPanel>
-                </StackPanel>
+            <DockPanel LastChildFill="True">
+                <ListBox ItemsSource="{Binding Realtors}"
+                         SelectedItem="{Binding SelectedRealtor}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="models:Realtor">
+                            <controls:RealtorControl Realtor="{Binding}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </DockPanel>
             
-        </DockPanel>
-        
-    </Grid>
+            <DockPanel Grid.Column="1" LastChildFill="True"
+                       IsEnabled="{Binding IsRealtorSelected}">
+                <ComboBox HorizontalAlignment="Center"
+                          DockPanel.Dock="Top"
+                          ItemsSource="{Binding ComboBoxCollection}"
+                          SelectedItem="{Binding SelectedComboBoxItem}"/>
+                
+                <ListBox ItemsSource="{Binding SelectedRealtorDemands}"
+                         IsVisible="{Binding ListBoxDemandIsVisible}"
+                         DockPanel.Dock="Top" HorizontalAlignment="Center">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="models:Demand">
+                            <controls:DemandControl Demand="{Binding}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                
+                <ListBox ItemsSource="{Binding SelectedRealtorSupplies}"
+                         IsVisible="{Binding ListBoxSupplyIsVisible}"
+                         DockPanel.Dock="Top" HorizontalAlignment="Center">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="models:Supply">
+                            <controls:SupplyControl Supply="{Binding}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                
+                <DockPanel LastChildFill="True"
+                           IsVisible="{Binding IsUserEditingVisible}"
+                           DockPanel.Dock="Top" HorizontalAlignment="Center">
+                    <Grid DockPanel.Dock="Bottom"
+                          Margin="5"
+                          HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                    
+                        <Button Content="Сохранить"
+                                HorizontalAlignment="Center"
+                                Command="{Binding SaveRealtorCommand}"/>
+                        <Button Grid.Column="1" Content="Удалить"
+                                HorizontalAlignment="Center"
+                                Command="{Binding DeleteRealtorCommand}"/>
+                        <Button Grid.Column="2" Content="Отмена"
+                                HorizontalAlignment="Center"
+                                Command="{Binding CancelRealtorEditionCommand}"/>
+                    </Grid>
+                    
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Id -"/>
+                            <Label Content="{Binding SelectedRealtor.Id}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Фамилия -"/>
+                            <TextBox Text="{Binding SelectedRealtor.FirstName, Mode=TwoWay}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Имя -"/>
+                            <TextBox Text="{Binding SelectedRealtor.SecondName, Mode=TwoWay}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Отчество -"/>
+                            <TextBox Text="{Binding SelectedRealtor.LastName, Mode=TwoWay}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Доля -"/>
+                            <TextBox Text="{Binding SelectedRealtor.Share, Mode=TwoWay}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </DockPanel>
+                
+            </DockPanel>
+            
+        </Grid>
+    </DockPanel>
+    
 </UserControl>

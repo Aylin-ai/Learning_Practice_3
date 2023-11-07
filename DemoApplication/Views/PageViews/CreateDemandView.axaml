@@ -3,69 +3,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:pageViewModels="clr-namespace:DemoApplication.ViewModels.PageViewModels"
-             xmlns:models="clr-namespace:DemoApplication.Models"
-             xmlns:controls="clr-namespace:DemoApplication.Controls"
              mc:Ignorable="d" d:DesignWidth="100" d:DesignHeight="100"
-             x:Class="DemoApplication.Views.PageViews.DemandsView"
+             x:Class="DemoApplication.Views.PageViews.CreateDemandView"
              x:CompileBindings="False">
-    
     <UserControl.DataContext>
-        <pageViewModels:DemandsViewModel/>
+        <pageViewModels:CreateDemandViewModel/>
     </UserControl.DataContext>
     
     <DockPanel LastChildFill="True">
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-        <Button Content="Назад" HorizontalAlignment="Left"
-                Command="{Binding $parent[Window].DataContext.NavigateToMainMenuCommand}"/>
-        <Button Content="Добавить" HorizontalAlignment="Right"
-                Command="{Binding $parent[Window].DataContext.NavigateToCreateDemandCommand}"/>
-    </StackPanel>
-    
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        
-        <DockPanel LastChildFill="True">
-            <ListBox ItemsSource="{Binding Demands}"
-                     SelectedItem="{Binding SelectedDemand}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate DataType="models:Demand">
-                        <controls:DemandControl Demand="{Binding}"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </DockPanel>
-        
-        <DockPanel Grid.Column="1"
-                   IsEnabled="{Binding IsDemandSelected}">
-            
-            <ComboBox HorizontalAlignment="Center"
-                      DockPanel.Dock="Top"
-                      ItemsSource="{Binding ComboBoxCollection}"
-                      SelectedItem="{Binding SelectedComboBoxItem}"/>
-            
-            <DockPanel LastChildFill="True" DockPanel.Dock="Top"
-                       IsVisible="{Binding IsRelatedDealsVisible}"
-                       HorizontalAlignment="Stretch"
-                       VerticalAlignment="Top">
-                <ListBox ItemsSource="{Binding RelatedDeals}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate DataType="models:Deal">
-                            <controls:DealControl Deal="{Binding}"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </DockPanel>
-            
-            <DockPanel LastChildFill="True"
-                       IsVisible="{Binding IsUserEditingVisible}">
                 <Grid DockPanel.Dock="Bottom"
                       Margin="5"
                       HorizontalAlignment="Center">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
@@ -73,36 +22,34 @@
                     <Button Content="Сохранить"
                             HorizontalAlignment="Center"
                             Command="{Binding SaveDemandCommand}"/>
-                    <Button Grid.Column="1" Content="Удалить"
+                    <Button Grid.Column="1" Content="Отмена"
                             HorizontalAlignment="Center"
-                            Command="{Binding DeleteDemandCommand}"/>
-                    <Button Grid.Column="2" Content="Отмена"
-                            HorizontalAlignment="Center"
-                            Command="{Binding CancelDemandEditionCommand}"/>
+                            Command="{Binding $parent[Window].DataContext.NavigateToDemandsCommand}"/>
                 </Grid>
-                
-                <StackPanel Orientation="Vertical">
+        
+        <ScrollViewer>
+            <StackPanel Orientation="Vertical">
                     
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Мин. цена -"/>
-                        <TextBox Text="{Binding SelectedDemand.MinCost, Mode=TwoWay}"/>
+                        <TextBox Text="{Binding Demand.MinCost, Mode=TwoWay}"/>
                     </StackPanel>
                     
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Макс. цена -"/>
-                        <TextBox Text="{Binding SelectedDemand.MaxCost, Mode=TwoWay}"/>
+                        <TextBox Text="{Binding Demand.MaxCost, Mode=TwoWay}"/>
                     </StackPanel>
                     
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Адрес -"/>
                         <Label Content="г."/>
-                        <TextBox Text="{Binding SelectedDemand.Address.City, Mode=TwoWay}"/>
+                        <TextBox Text="{Binding Demand.Address.City, Mode=TwoWay}"/>
                         <Label Content="ул."/>
-                        <TextBox Text="{Binding SelectedDemand.Address.Street, Mode=TwoWay}"/>
+                        <TextBox Text="{Binding Demand.Address.Street, Mode=TwoWay}"/>
                         <Label Content="д."/>
-                        <TextBox Text="{Binding SelectedDemand.Address.House, Mode=TwoWay}"/>
+                        <TextBox Text="{Binding Demand.Address.House, Mode=TwoWay}"/>
                         <Label Content="кв."/>
-                        <TextBox Text="{Binding SelectedDemand.Address.Apartment, Mode=TwoWay}"/>
+                        <TextBox Text="{Binding Demand.Address.Apartment, Mode=TwoWay}"/>
                     </StackPanel>
                     
                     <StackPanel Orientation="Vertical">
@@ -184,32 +131,32 @@
                                     IsVisible="{Binding !IsLandChosen}">
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="Мин. площадь -"/>
-                                <TextBox Text="{Binding SelectedDemand.MoreInformation.MinArea,
+                                <TextBox Text="{Binding Demand.MoreInformation.MinArea,
                                 Mode=TwoWay}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="Макс. площадь -"/>
-                                <TextBox Text="{Binding SelectedDemand.MoreInformation.MaxArea,
+                                <TextBox Text="{Binding Demand.MoreInformation.MaxArea,
                                 Mode=TwoWay}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="Мин. кол-во комнат -"/>
-                                <TextBox Text="{Binding SelectedDemand.MoreInformation.MinRooms,
+                                <TextBox Text="{Binding Demand.MoreInformation.MinRooms,
                                 Mode=TwoWay}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="Макс. кол-во комнат -"/>
-                                <TextBox Text="{Binding SelectedDemand.MoreInformation.MaxRooms,
+                                <TextBox Text="{Binding Demand.MoreInformation.MaxRooms,
                                 Mode=TwoWay}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="Мин. этаж(ность) -"/>
-                                <TextBox Text="{Binding SelectedDemand.MoreInformation.MinFloor,
+                                <TextBox Text="{Binding Demand.MoreInformation.MinFloor,
                                 Mode=TwoWay}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="Макс. этаж(ность) -"/>
-                                <TextBox Text="{Binding SelectedDemand.MoreInformation.MaxFloor,
+                                <TextBox Text="{Binding Demand.MoreInformation.MaxFloor,
                                 Mode=TwoWay}"/>
                             </StackPanel>
                         </StackPanel>
@@ -218,12 +165,12 @@
                                     IsVisible="{Binding IsLandChosen}">
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="Мин. площадь -"/>
-                                <TextBox Text="{Binding SelectedDemand.MoreInformation.MinArea,
+                                <TextBox Text="{Binding Demand.MoreInformation.MinArea,
                                 Mode=TwoWay}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="Макс. площадь -"/>
-                                <TextBox Text="{Binding SelectedDemand.MoreInformation.MaxArea,
+                                <TextBox Text="{Binding Demand.MoreInformation.MaxArea,
                                 Mode=TwoWay}"/>
                             </StackPanel>
                         </StackPanel>
@@ -231,12 +178,8 @@
                     </StackPanel>
                     
                 </StackPanel>
+        </ScrollViewer>
                 
-            </DockPanel>
-            
-        </DockPanel>
-        
-    </Grid>
     </DockPanel>
     
 </UserControl>
