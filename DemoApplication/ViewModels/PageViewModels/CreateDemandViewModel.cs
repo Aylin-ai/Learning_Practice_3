@@ -24,7 +24,9 @@ public class CreateDemandViewModel : ViewModelBase
     {
         Client = new Client(),
         Realtor = new Realtor(),
-        Address = new Address()
+        Address = new Address(),
+        MoreInformation = new DemandMoreInformation(),
+        RealEstateType = "Квартира"
     };
     public Demand Demand
     {
@@ -198,16 +200,29 @@ public class CreateDemandViewModel : ViewModelBase
         {
             connection.Open();
             string query1 = "insert into demand (RealEstateType, MinCost, MaxCost, Address, CLientId, RealtorId) " +
-                            "values (@realEstateType, @minCist, @maxCost, @address, @clientId, @realtorId);";
+                            "values (@realEstateType, @minCost, @maxCost, @address, @clientId, @realtorId);";
             string query2 = "select id from demand order by id desc limit 1;";
             string query3 = "";
 
             MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = connection;
             cmd.CommandText = query1;
+            
+            if (Demand.RealEstateType == "Квартира")
+            {
+                cmd.Parameters.AddWithValue("@realEstateType", 1);
+            }
+            else if (Demand.RealEstateType == "Дом")
+            {
+                cmd.Parameters.AddWithValue("@realEstateType", 2);
+            }
+            else if (Demand.RealEstateType == "Земля")
+            {
+                cmd.Parameters.AddWithValue("@realEstateType", 3);
+            }
 
-            cmd.Parameters.AddWithValue("@minCost", Demand.MinCost);
-            cmd.Parameters.AddWithValue("@maxCost", Demand.MaxCost);
+            cmd.Parameters.AddWithValue("@minCost", Demand.MinCost == null ? 0 : Demand.MinCost);
+            cmd.Parameters.AddWithValue("@maxCost", Demand.MaxCost == null ? 0 : Demand.MaxCost);
             cmd.Parameters.AddWithValue("@address", $"{Demand.Address.City}," +
                                                     $"{Demand.Address.Street}," +
                                                     $"{Demand.Address.House}," +
@@ -229,12 +244,12 @@ public class CreateDemandViewModel : ViewModelBase
                     id = reader.GetInt32(0);
                 }
             }
+            reader.Close();
 
             cmd.Parameters.AddWithValue("@demandId", id);
             
             if (Demand.RealEstateType == "Квартира")
             {
-                cmd.Parameters.AddWithValue("@realEstateType", 1);
                 query3 = "insert into apartmentDemand values (@demandId, @minArea, @maxArea, @minRooms, @maxRooms, " +
                          "@minFloor, @maxFloor);";
 
@@ -247,7 +262,6 @@ public class CreateDemandViewModel : ViewModelBase
             }
             else if (Demand.RealEstateType == "Дом")
             {
-                cmd.Parameters.AddWithValue("@realEstateType", 2);
                 query3 = "insert into houseDemand values (@demandId, @minArea, @maxArea, @minRooms, @maxRooms, " +
                          "@minFloor, @maxFloor);";
                 cmd.Parameters.AddWithValue("@minArea", Demand.MoreInformation.MinArea);
@@ -259,7 +273,6 @@ public class CreateDemandViewModel : ViewModelBase
             }
             else if (Demand.RealEstateType == "Земля")
             {
-                cmd.Parameters.AddWithValue("@realEstateType", 3);
                 query3 = "insert into landDemand values (@demandId, @minArea, @maxArea);";
                 cmd.Parameters.AddWithValue("@minArea", Demand.MoreInformation.MinArea);
                 cmd.Parameters.AddWithValue("@maxArea", Demand.MoreInformation.MaxArea);

@@ -382,8 +382,6 @@ public class RealEstatesViewModel : ViewModelBase
             cmd.CommandText = query2;
             cmd.ExecuteNonQuery();
             
-            SelectedEstate = null;
-            IsRealEstateSelected = false;
             SelectedComboBoxItem = "Нет";
             GetAllRealEstates();
         }

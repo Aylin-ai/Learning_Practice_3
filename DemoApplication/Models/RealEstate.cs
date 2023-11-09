@@ -19,22 +19,22 @@ public class RealEstate : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _type, value);
     }
 
-    private Address? _address;
-    public Address? Address
+    private Address _address;
+    public Address Address
     {
         get => _address;
         set => this.RaiseAndSetIfChanged(ref _address, value);
     }
 
-    private Coordinates? _coordinates;
-    public Coordinates? Coordinates
+    private Coordinates _coordinates;
+    public Coordinates Coordinates
     {
         get => _coordinates;
         set => this.RaiseAndSetIfChanged(ref _coordinates, value);
     }
 
-    private RealEstateMoreInformation? _moreInformation;
-    public RealEstateMoreInformation? MoreInformation
+    private RealEstateMoreInformation _moreInformation;
+    public RealEstateMoreInformation MoreInformation
     {
         get => _moreInformation;
         set => this.RaiseAndSetIfChanged(ref _moreInformation, value);

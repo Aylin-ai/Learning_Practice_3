@@ -293,7 +293,6 @@ public class ClientsViewModel : ViewModelBase
 
             cmd.CommandText = query3;
             cmd.ExecuteNonQuery();
-            SelectedClient = null;
             SelectedComboBoxItem = "Нет";
             GetAllClients();
         }

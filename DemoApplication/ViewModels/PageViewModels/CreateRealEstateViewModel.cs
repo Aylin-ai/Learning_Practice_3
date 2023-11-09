@@ -19,7 +19,9 @@ public class CreateRealEstateViewModel : ViewModelBase
     private RealEstate _realEstate = new RealEstate()
     {
         Address = new Address(),
-        MoreInformation = new RealEstateMoreInformation()
+        Coordinates = new Coordinates(),
+        MoreInformation = new RealEstateMoreInformation(),
+        Type = "Квартира"
     };
     public RealEstate RealEstate
     {
@@ -101,8 +103,8 @@ public class CreateRealEstateViewModel : ViewModelBase
             string query1 = "insert into address values (@id, " +
                             "@newCity, @newStreet, @newHouse, " +
                             "@newApartment);";
-            string query2 = "insert into coordinates (@id, " +
-                            "@newLatitude, Longitude = @newLongitude)";
+            string query2 = "insert into coordinates values (@id, " +
+                            "@newLatitude, @newLongitude)";
             string query3 = "";
             if (RealEstate.Type == "Квартира")
                 query3 = "insert into apartment values (@id, " +

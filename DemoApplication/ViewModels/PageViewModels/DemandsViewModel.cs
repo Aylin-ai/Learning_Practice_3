@@ -528,8 +528,6 @@ public class DemandsViewModel : ViewModelBase
 
             cmd.CommandText = query2;
             cmd.ExecuteNonQuery();
-            SelectedDemand = null;
-            IsDemandSelected = false;
             SelectedComboBoxItem = "Нет";
             SelectedComboBoxClient = "";
             SelectedComboBoxRealtor = "";

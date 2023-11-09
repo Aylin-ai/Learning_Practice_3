@@ -24,7 +24,7 @@
                                 Command="{Binding SaveRealtorCommand}"/>
                         <Button Grid.Column="1" Content="Отмена"
                                 HorizontalAlignment="Center"
-                                Command="{Binding CancelRealtorEditionCommand}"/>
+                                Command="{Binding $parent[Window].DataContext.NavigateToRealtorsCommand}"/>
                     </Grid>
                     
                     <StackPanel Orientation="Vertical">

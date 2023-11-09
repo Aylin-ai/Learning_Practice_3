@@ -305,7 +305,6 @@ public class RealtorsViewModel : ViewModelBase
 
             cmd.CommandText = query3;
             cmd.ExecuteNonQuery();
-            SelectedRealtor = null;
             SelectedComboBoxItem = "Нет";
             GetAllRealtors();
         }

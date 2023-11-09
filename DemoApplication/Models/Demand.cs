@@ -54,8 +54,8 @@ public class Demand : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _realtor, value);
     }
 
-    private DemandMoreInformation? _moreInformation;
-    public DemandMoreInformation? MoreInformation
+    private DemandMoreInformation _moreInformation;
+    public DemandMoreInformation MoreInformation
     {
         get => _moreInformation;
         set => this.RaiseAndSetIfChanged(ref _moreInformation, value);

@@ -401,8 +401,6 @@ public class SuppliesViewModel : ViewModelBase
 
             cmd.CommandText = query2;
             cmd.ExecuteNonQuery();
-            SelectedSupply = null;
-            IsSupplySelected = false;
             SelectedComboBoxItem = "Нет";
             SelectedComboBoxClient = "";
             SelectedComboBoxRealtor = "";
